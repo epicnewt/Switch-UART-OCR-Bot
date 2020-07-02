@@ -1,6 +1,9 @@
 import React, {useEffect, useRef, useState} from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Tesseract from "tesseract.js";
+
+// console.log('TESSDATA_PREFIX', process.env['TESSDATA_PREFIX']);
 
 const {desktopCapturer} = Electron;
 
@@ -17,41 +20,49 @@ async function findVideoSources(): Promise<Electron.DesktopCapturerSource[]> {
     })
 }
 
-//
-//
-// desktopCapturer.getSources({
-//   types: ['window', 'screen'],
-//   thumbnailSize: {width: 0, height: 0},
-//   fetchWindowIcons: true
-// }).then(async (sources: Electron.DesktopCapturerSource[]) => {
-//   console.log(sources);
-//
-//   for (const source of sources) {
-//     // Filter: main screen
-//     // if ((source.name === "Entire screen") || (source.name === "Screen 1") || (source.name === "Screen 2")) {
-//     //     try {
-//     //         const stream = await navigator.mediaDevices.getUserMedia({
-//     //             audio: false,
-//     //             video: {}
-//     //         });
-//     //
-//     //         _this.handleStream(stream);
-//     //     } catch (e) {
-//     //         _this.handleError(e);
-//     //     }
-//     // }
-//   }
-// });
-
 function App() {
-    let videoEl = useRef<HTMLVideoElement>(null);
+    const videoEl: React.RefObject<HTMLVideoElement> = useRef<HTMLVideoElement>(null);
 
     const [sources, setSources] = useState<Electron.DesktopCapturerSource[]>([]);
     const [selectedSource, selectSource] = useState<Electron.DesktopCapturerSource>();
-    const [videoSource, setVideoSrc] = useState();
+
+    async function doOcrCheck() {
+        console.log('doOcrCheck():', videoEl.current);
+
+        if (!videoEl.current)
+            return;
+
+        Tesseract.recognize(videoEl.current, 'eng')
+            .catch((err: any) => console.error('Tesseract.recognize(videoEl.current)', err))
+            .then((result) => console.log('Tesseract.recognize(videoEl.current)', result));
+    }
 
     useEffect(() => {
         findVideoSources().then(setSources)
+    }, []);
+
+    useEffect(() => {
+        // const {createWorker} = require('tesseract.js');
+
+        // const worker = createWorker({
+        //     logger: (m: any) => console.log(m),
+        // });
+
+        async function loadWorker() {
+            // console.log('await worker.load();', await worker.load());
+            // console.log('await worker.loadLanguage(\'eng\');', await worker.loadLanguage('eng'));
+            // console.log('await worker.initialize(\'eng\');', await worker.initialize('eng'));
+
+            // setOcrWorker(worker);
+        }
+
+        loadWorker().catch(err => {
+            console.error(err)
+        });
+
+        // return () => {
+        //     worker.terminate()
+        // }
     }, []);
 
     useEffect(() => {
@@ -89,7 +100,7 @@ function App() {
     return (
         <div className="App">
             <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo"/>
+                <button onClick={doOcrCheck}>Run OCR</button>
                 <p>
                     Edit <code>src/App.tsx</code> and save to reload.
                 </p>
@@ -102,11 +113,8 @@ function App() {
                         : (
                             <div style={{display: 'flex', flexDirection: 'column'}}>{
                                 sources.filter(s => !!s.appIcon).map(source => (
-                                    // <div>
                                     <img key={source.id} style={{width: 64, height: 'auto', marginRight: '5px'}}
                                          src={source.appIcon.toDataURL()} onClick={() => selectSource(source)}/>
-                                    // <span>{source.name}</span>
-                                    // </div>
                                 ))
                             }</div>
                         )

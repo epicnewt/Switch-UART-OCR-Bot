@@ -8,7 +8,7 @@ function createWindow () {
     width: 800,
     height: 600,
     webPreferences: {
-      nodeIntegration: false,
+      nodeIntegration: true,
       preload: path.join(__dirname, 'preload.js')
     }
   });
@@ -16,8 +16,6 @@ function createWindow () {
   // and load the index.html of the app.
   // mainWindow.loadFile('index.html')
   mainWindow.loadURL('http://localhost:3000');
-  mainWindow.Electron = require('electron');
-  console.log('mainWindow.Electron: ', !!mainWindow.Electron);
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools()
