@@ -2,7 +2,8 @@ import React, {useCallback, useEffect, useState} from 'react';
 import './App.css';
 import Tesseract from "tesseract.js";
 import SerialPort from "serialport";
-import {Controller} from "./controller/controller";
+import {ButtonEventData, Controller} from "./controller/controller";
+import {tap} from "rxjs/operators";
 
 const {desktopCapturer} = Electron;
 
@@ -28,6 +29,8 @@ function App() {
 
     const [ports, setPorts] = useState<SerialPort.PortInfo[]>([]);
     const [sources, setSources] = useState<Electron.DesktopCapturerSource[]>([]);
+    const [controller, setController] = useState<Controller>();
+    const [buttonData, setButtonData] = useState<ButtonEventData>();
     const [compState, setCompState] = useState(0);
     const [intervalID, setIntervalID] = useState<NodeJS.Timeout>();
 
@@ -48,6 +51,12 @@ function App() {
             .catch((err: any) => console.error('Tesseract.recognize(videoEl.current)', err))
             .then((result) => console.log('Tesseract.recognize(videoEl.current)', result));
     }
+
+    useEffect(() => {
+        if (controller) {
+            controller.events$.pipe(tap(console.log)).subscribe(setButtonData)
+        }
+    }, [controller]);
 
     useEffect(() => {
         findVideoSources().then(setSources)
@@ -99,8 +108,10 @@ function App() {
     useEffect(() => {
         console.log('selectedPort:', selectedPort);
         if (selectedPort) {
+            const c = new Controller(selectedPort.path);
+            setController(c);
             // @ts-ignore
-            window.controller = new Controller(selectedPort.path);
+            window.controller = c;
             if (intervalID) {
                 clearInterval(intervalID)
             }
