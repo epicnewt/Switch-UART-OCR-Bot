@@ -17,6 +17,7 @@ function createWindow () {
   // mainWindow.loadFile('index.html')
   mainWindow.loadURL('http://localhost:3000');
 
+
   // Open the DevTools.
   mainWindow.webContents.openDevTools()
 }

@@ -1,9 +1,8 @@
-import React, {useEffect, useRef, useState} from 'react';
-import logo from './logo.svg';
+import React, {useCallback, useEffect, useState} from 'react';
 import './App.css';
 import Tesseract from "tesseract.js";
-
-// console.log('TESSDATA_PREFIX', process.env['TESSDATA_PREFIX']);
+import SerialPort from "serialport";
+import {Controller} from "./controller/controller";
 
 const {desktopCapturer} = Electron;
 
@@ -20,19 +19,32 @@ async function findVideoSources(): Promise<Electron.DesktopCapturerSource[]> {
     })
 }
 
-function App() {
-    const videoEl: React.RefObject<HTMLVideoElement> = useRef<HTMLVideoElement>(null);
+const PICK_SERIAL_DEVICE = 0;
+const PICK_APPLICATION = 1;
 
-    const [sources, setSources] = useState<Electron.DesktopCapturerSource[]>([]);
+function App() {
+    const [selectedPort, selectPort] = useState<SerialPort.PortInfo>();
     const [selectedSource, selectSource] = useState<Electron.DesktopCapturerSource>();
 
-    async function doOcrCheck() {
-        console.log('doOcrCheck():', videoEl.current);
+    const [ports, setPorts] = useState<SerialPort.PortInfo[]>([]);
+    const [sources, setSources] = useState<Electron.DesktopCapturerSource[]>([]);
+    const [compState, setCompState] = useState(0);
+    const [intervalID, setIntervalID] = useState<NodeJS.Timeout>();
 
-        if (!videoEl.current)
+    const [videoEl, setVideoEl] = useState<HTMLVideoElement>();
+    const video = useCallback((node) => {
+        if (node !== videoEl) {
+            setVideoEl(node)
+        }
+    }, []);
+
+    async function doOcrCheck() {
+        console.log('doOcrCheck():', videoEl);
+
+        if (!videoEl)
             return;
 
-        Tesseract.recognize(videoEl.current, 'eng')
+        Tesseract.recognize(videoEl, 'eng')
             .catch((err: any) => console.error('Tesseract.recognize(videoEl.current)', err))
             .then((result) => console.log('Tesseract.recognize(videoEl.current)', result));
     }
@@ -42,32 +54,19 @@ function App() {
     }, []);
 
     useEffect(() => {
-        // const {createWorker} = require('tesseract.js');
+        const SerialPort = Electron.remote.require('serialport');
 
-        // const worker = createWorker({
-        //     logger: (m: any) => console.log(m),
-        // });
-
-        async function loadWorker() {
-            // console.log('await worker.load();', await worker.load());
-            // console.log('await worker.loadLanguage(\'eng\');', await worker.loadLanguage('eng'));
-            // console.log('await worker.initialize(\'eng\');', await worker.initialize('eng'));
-
-            // setOcrWorker(worker);
-        }
-
-        loadWorker().catch(err => {
-            console.error(err)
-        });
-
-        // return () => {
-        //     worker.terminate()
-        // }
+        setIntervalID(setInterval(() => {
+            SerialPort.list().then(setPorts)
+        }, 500));
     }, []);
 
     useEffect(() => {
+        console.log(JSON.stringify({source: !!selectSource, video: !!videoEl}));
+
         async function startStream() {
-            const video = videoEl.current;
+            const video = videoEl;
+            console.log(JSON.stringify({source: !!selectSource, video: !!videoEl}));
 
             if (video && selectedSource) {
                 video.onloadedmetadata = function () {
@@ -87,46 +86,75 @@ function App() {
                         }
                     } as MediaTrackConstraints
                 })
+            } else {
+                console.error("Failed to start video")
             }
         }
 
-        if (selectedSource) {
-            startStream().catch((err) => {
-                console.error(err)
-            })
+        startStream().catch((err) => {
+            console.error(err)
+        })
+    }, [selectedSource, videoEl]);
+
+    useEffect(() => {
+        console.log('selectedPort:', selectedPort);
+        if (selectedPort) {
+            // @ts-ignore
+            window.controller = new Controller(selectedPort.path);
+            if (intervalID) {
+                clearInterval(intervalID)
+            }
         }
-    }, [selectedSource]);
+    }, [selectedPort]);
+
+    useEffect(() => {
+        setCompState([selectedPort, selectedSource].filter(s => !!s).length)
+    }, [selectedPort, selectedSource]);
+
+    switch (compState) {
+        case PICK_SERIAL_DEVICE:
+            return (
+                <div className="App">
+                    <header className="App-header">{
+                        ports.length
+                            ? ports.map(port => <p key={port.path} style={{cursor: 'pointer'}}
+                                                   onClick={() => selectPort(port)}>{port.path}</p>)
+                            : <span>No ports</span>
+                    }</header>
+                </div>
+            );
+        case PICK_APPLICATION:
+            return (
+                <div style={{display: 'flex', flexDirection: 'column'}}>
+                    <header className="App-header">
+                        <button onClick={() => {
+                            // @ts-ignore
+                            window.controller.close()
+                        }}>CLOSE
+                        </button>
+                        {
+                            sources.filter(s => !!s.appIcon).map(source => (
+                                <img key={source.id} style={{width: 64, height: 'auto', marginRight: '5px'}}
+                                     src={source.appIcon.toDataURL()} onClick={() => selectSource(source)}/>
+                            ))
+                        }
+                    </header>
+                </div>
+            );
+    }
 
     return (
         <div className="App">
             <header className="App-header">
+                <button onClick={() => {
+                    // @ts-ignore
+                    window.controller.close()
+                }}>CLOSE
+                </button>
                 <button onClick={doOcrCheck}>Run OCR</button>
-                <p>
-                    Edit <code>src/App.tsx</code> and save to reload.
-                </p>
                 <video id="video-stream"
-                       style={{width: '100%', height: 'auto', display: selectedSource ? undefined : 'none'}}
-                       ref={videoEl}/>
-                {
-                    (selectedSource)
-                        ? null
-                        : (
-                            <div style={{display: 'flex', flexDirection: 'column'}}>{
-                                sources.filter(s => !!s.appIcon).map(source => (
-                                    <img key={source.id} style={{width: 64, height: 'auto', marginRight: '5px'}}
-                                         src={source.appIcon.toDataURL()} onClick={() => selectSource(source)}/>
-                                ))
-                            }</div>
-                        )
-                }
-                <a
-                    className="App-link"
-                    href="https://reactjs.org"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Learn React
-                </a>
+                       style={{width: '100%', height: 'auto'}}
+                       ref={video}/>
             </header>
         </div>
     );
