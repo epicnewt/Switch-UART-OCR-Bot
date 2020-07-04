@@ -1,9 +1,10 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import './App.css';
-import Tesseract from "tesseract.js";
-import SerialPort from "serialport";
-import {ButtonEventData, Controller} from "./controller/controller";
-import {tap} from "rxjs/operators";
+import Tesseract from 'tesseract.js';
+import ISerialPort from 'serialport';
+import {ButtonEventData, Controller} from './controller/controller';
+import {tap} from 'rxjs/operators';
+import {LeftJoyCon, RightJoyCon} from './Switch';
 
 const {desktopCapturer} = Electron;
 
@@ -20,18 +21,19 @@ async function findVideoSources(): Promise<Electron.DesktopCapturerSource[]> {
     })
 }
 
+const HACK = -1;
 const PICK_SERIAL_DEVICE = 0;
 const PICK_APPLICATION = 1;
 
 function App() {
-    const [selectedPort, selectPort] = useState<SerialPort.PortInfo>();
+    const [selectedPort, selectPort] = useState<ISerialPort.PortInfo>();
     const [selectedSource, selectSource] = useState<Electron.DesktopCapturerSource>();
 
-    const [ports, setPorts] = useState<SerialPort.PortInfo[]>([]);
+    const [ports, setPorts] = useState<ISerialPort.PortInfo[]>([]);
     const [sources, setSources] = useState<Electron.DesktopCapturerSource[]>([]);
     const [controller, setController] = useState<Controller>();
     const [buttonData, setButtonData] = useState<ButtonEventData>();
-    const [compState, setCompState] = useState(0);
+    const [compState, setCompState] = useState(HACK);
     const [intervalID, setIntervalID] = useState<NodeJS.Timeout>();
 
     const [videoEl, setVideoEl] = useState<HTMLVideoElement>();
@@ -74,15 +76,14 @@ function App() {
         console.log(JSON.stringify({source: !!selectSource, video: !!videoEl}));
 
         async function startStream() {
-            const video = videoEl;
             console.log(JSON.stringify({source: !!selectSource, video: !!videoEl}));
 
-            if (video && selectedSource) {
-                video.onloadedmetadata = function () {
-                    video.play()
+            if (videoEl && selectedSource) {
+                videoEl.onloadedmetadata = () => {
+                    videoEl.play()
                 };
 
-                video.srcObject = await navigator.mediaDevices.getUserMedia({
+                videoEl.srcObject = await navigator.mediaDevices.getUserMedia({
                     audio: false,
                     video: {
                         mandatory: {
@@ -96,7 +97,7 @@ function App() {
                     } as MediaTrackConstraints
                 })
             } else {
-                console.error("Failed to start video")
+                console.error('Failed to start video')
             }
         }
 
@@ -119,17 +120,20 @@ function App() {
     }, [selectedPort]);
 
     useEffect(() => {
-        setCompState([selectedPort, selectedSource].filter(s => !!s).length)
+        if (!compState)
+            setCompState([selectedPort, selectedSource].filter(s => !!s).length)
     }, [selectedPort, selectedSource]);
 
     switch (compState) {
         case PICK_SERIAL_DEVICE:
             return (
-                <div className="App">
-                    <header className="App-header">{
+                <div className='App'>
+                    <header className='App-header'>{
                         ports.length
-                            ? ports.map(port => <p key={port.path} style={{cursor: 'pointer'}}
-                                                   onClick={() => selectPort(port)}>{port.path}</p>)
+                            ? ports.map(port =>
+                                <p key={port.path} style={{cursor: 'pointer'}}
+                                   onClick={() => selectPort(port)}>{port.path}</p>
+                            )
                             : <span>No ports</span>
                     }</header>
                 </div>
@@ -137,7 +141,7 @@ function App() {
         case PICK_APPLICATION:
             return (
                 <div style={{display: 'flex', flexDirection: 'column'}}>
-                    <header className="App-header">
+                    <header className='App-header'>
                         <button onClick={() => {
                             // @ts-ignore
                             window.controller.close()
@@ -152,18 +156,25 @@ function App() {
                     </header>
                 </div>
             );
+        case HACK:
+            return (
+                <div>
+                    <RightJoyCon key={0}/>
+                    <LeftJoyCon key={1}/>
+                </div>
+            )
     }
 
     return (
-        <div className="App">
-            <header className="App-header">
+        <div className='App'>
+            <header className='App-header'>
                 <button onClick={() => {
                     // @ts-ignore
                     window.controller.close()
                 }}>CLOSE
                 </button>
                 <button onClick={doOcrCheck}>Run OCR</button>
-                <video id="video-stream"
+                <video id='video-stream'
                        style={{width: '100%', height: 'auto'}}
                        ref={video}/>
             </header>

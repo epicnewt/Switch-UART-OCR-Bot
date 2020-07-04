@@ -1,0 +1,15 @@
+{
+  "extends": [
+    "tslint:recommended",
+    "tslint-react"
+  ],
+  "rules": {
+    "quotemark": {
+      "severity": "error",
+      "options": ["single", "jsx-single", "avoid-escape", "avoid-template"]
+    },
+    "no-console": false,
+    "jsx-no-lambda": false,
+    "no-bitwise": false
+  }
+}

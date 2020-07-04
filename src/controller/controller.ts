@@ -1,8 +1,8 @@
-import {Payload} from "./payload";
+import {Payload} from './payload';
 import {Buttons, HAT} from './buttons.model'
-import ISerialPort from "serialport";
-import {Observable, Subject} from "rxjs";
-import {map, share} from "rxjs/operators";
+import ISerialPort from 'serialport';
+import {Observable, Subject} from 'rxjs';
+import {map, share} from 'rxjs/operators';
 
 const SerialPort = Electron.remote.require('serialport');
 
