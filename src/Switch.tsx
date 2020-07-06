@@ -3,7 +3,7 @@ import React from 'react';
 export function LeftJoyCon() {
     return (
         <svg width='137.7' height='424' id='svg2' version='1.1'
-             style={{margin: 5, /*borderWidth: 0.1, borderColor: 'red', borderStyle: 'solid',*/ zoom: 1}}>
+             style={{margin: 5, borderWidth: 0.1, borderColor: 'red', borderStyle: 'solid', zoom: 6}}>
             <defs id='defs4'>
                 <filter id='filter3994' color-interpolation-filters='sRGB'>
                     <feGaussianBlur stdDeviation='0.95' id='feGaussianBlur3996'/>
@@ -246,13 +246,14 @@ export function LeftJoyCon() {
 
 export function RightJoyCon() {
     return (
-        <svg width='141' height='427' id='svg2' version='1.1'>
-            <defs id='defs4'>
+        <svg width='137.7' height='424' id='svg2' version='1.1'
+             style={{margin: 5, borderWidth: 0.1, borderColor: 'red', borderStyle: 'solid', zoom: 6}}>
+        <defs id='defs4'>
                 <filter id='filter3994' color-interpolation-filters='sRGB'>
                     <feGaussianBlur stdDeviation='0.95' id='feGaussianBlur3996'/>
                 </filter>
             </defs>
-            <g id='layer1' transform='translate(-1033,-445.36218)'>
+            <g id='layer1' transform='translate(-1033.3,-446.6)'>
                 <path style={{
                     fill: '#44484c',
                     fillOpacity: 1,
