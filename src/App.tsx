@@ -158,16 +158,21 @@ function App() {
             );
         case HACK:
             return (
-                <div>
-                    <RightJoyCon key={0}/>
+                <div style={{zoom:1, overflowX: 'scroll', height: '100%'}}>
+                    <div style={{height: '95%', margin: '2.5%', display: 'flex', flexDirection: 'row'}}>
                     <LeftJoyCon key={1}/>
+                    <div style={{width: 489 / 9 * 16, height: '100%'}}>
+                        <div style={{width: 489 / 9 * 16, background: 'black', position: 'absolute', bottom: '2.5%', top: '3.2%'}} />
+                    </div>
+                    <RightJoyCon key={0}/>
+                    </div>
                 </div>
             )
     }
 
     return (
-        <div className='App'>
-            <header className='App-header'>
+        <div className='App' style={{height: '100%'}}>
+            <header className='App-header' style={{height: '100%'}}>
                 <button onClick={() => {
                     // @ts-ignore
                     window.controller.close()

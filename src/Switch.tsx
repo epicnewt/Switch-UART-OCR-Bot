@@ -2,14 +2,15 @@ import React from 'react';
 
 export function LeftJoyCon() {
     return (
-        <svg width='137.7' height='424' id='svg2' version='1.1'
-             style={{margin: 5, borderWidth: 0.1, borderColor: 'red', borderStyle: 'solid', zoom: 6}}>
+        <svg id='svg2' version='1.1'
+             style={{height: '100%'}}
+             viewBox='0 0 137.63 423.98'>
             <defs id='defs4'>
                 <filter id='filter3994' color-interpolation-filters='sRGB'>
                     <feGaussianBlur stdDeviation='0.95' id='feGaussianBlur3996'/>
                 </filter>
             </defs>
-            <g id='layer1' transform='translate(-28.8,-446.5)'>
+            <g id='layer1' transform='translate(-28.8,-446.62)'>
                 <path id='path3832'
                       d='m 142.86562,454.00874 0,-4.1875 c 0,-1.25689 -1.28376,-2.65625 -2.65625,-2.65625 l -26.25,0 c -40.493551,0 -76.739828,32.66191 -82.951478,55.8441 -0.28337,1.05756 -0.38499,3.18198 1.4584,3.18198 l 4.66249,0 z'
                       style={{
@@ -246,14 +247,15 @@ export function LeftJoyCon() {
 
 export function RightJoyCon() {
     return (
-        <svg width='137.7' height='424' id='svg2' version='1.1'
-             style={{margin: 5, borderWidth: 0.1, borderColor: 'red', borderStyle: 'solid', zoom: 6}}>
+        <svg id='svg2' version='1.1'
+             style={{height: '100%'}}
+             viewBox='0 0 137.63 424.6'>
         <defs id='defs4'>
                 <filter id='filter3994' color-interpolation-filters='sRGB'>
                     <feGaussianBlur stdDeviation='0.95' id='feGaussianBlur3996'/>
                 </filter>
             </defs>
-            <g id='layer1' transform='translate(-1033.3,-446.6)'>
+            <g id='layer1' transform='translate(-1033.3,-446.62)'>
                 <path style={{
                     fill: '#44484c',
                     fillOpacity: 1,
