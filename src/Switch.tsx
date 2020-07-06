@@ -1,472 +1,294 @@
 import React from 'react';
 
-export function LeftJoyCon() {
+export function Switch() {
     return (
-        <svg id='svg2' version='1.1'
-             style={{height: '100%'}}
-             viewBox='0 0 137.63 423.98'>
-            <defs id='defs4'>
-                <filter id='filter3994' color-interpolation-filters='sRGB'>
-                    <feGaussianBlur stdDeviation='0.95' id='feGaussianBlur3996'/>
-                </filter>
-            </defs>
-            <g id='layer1' transform='translate(-28.8,-446.62)'>
-                <path id='path3832'
-                      d='m 142.86562,454.00874 0,-4.1875 c 0,-1.25689 -1.28376,-2.65625 -2.65625,-2.65625 l -26.25,0 c -40.493551,0 -76.739828,32.66191 -82.951478,55.8441 -0.28337,1.05756 -0.38499,3.18198 1.4584,3.18198 l 4.66249,0 z'
-                      style={{
-                          fill: '#44484c',
-                          fillOpacity: 1,
-                          stroke: '#000000',
-                          strokeWidth: 1,
-                          strokeLinecap: 'butt',
-                          strokeLinejoin: 'miter',
-                          strokeOpacity: 1
-                      }}/>
-                <path id='path3925'
-                      d='m 165.90787,455.54757 0,412.68749 c 0,1.0235 -0.5059,1.7969 -1.79687,1.7969 l -49.64063,0 c -51.679508,0 -85.074858,-45.69768 -85.074858,-85.07487 l 0,-247.94077 c 0,-57.88508 56.764387,-84.71894 84.718948,-84.71894 l 48.79057,0 c 2.4861,0 3.00284,1.36797 3.00284,3.25019 z'
-                      style={{
-                          fill: '#00bbdb',
-                          fillOpacity: 1,
-                          stroke: '#000000',
-                          strokeWidth: 1,
-                          strokeLinecap: 'butt',
-                          strokeLinejoin: 'miter',
-                          strokeOpacity: 1
-                      }}/>
-                <path transform='matrix(1.2120324,0,0,1.2120324,-521.29791,512.58438)'
-                      d='m 526.42859,111.07143 a 12.5,12.5 0 1 1 -25,0 12.5,12.5 0 1 1 25,0 z' id='path3871'
-                      style={{
-                          fill: '#44484c',
-                          fillOpacity: 1,
-                          stroke: '#000000',
-                          strokeWidth: 0.82506043,
-                          strokeLinecap: 'round',
-                          strokeLinejoin: 'round',
-                          strokeMiterlimit: 4,
-                          strokeOpacity: 1,
-                          strokeDasharray: 'none'
-                      }}/>
-                <path style={{
-                    fill: '#44484c',
-                    fillOpacity: 1,
-                    stroke: '#000000',
-                    strokeWidth: 0.82506043,
-                    strokeLinecap: 'round',
-                    strokeLinejoin: 'round',
-                    strokeMiterlimit: 4,
-                    strokeOpacity: 1,
-                    strokeDasharray: 'none'
-                }} id='path3873' d='m 526.42859,111.07143 a 12.5,12.5 0 1 1 -25,0 12.5,12.5 0 1 1 25,0 z'
-                      transform='matrix(1.2120324,0,0,1.2120324,-521.29791,575.21384)'/>
-                <path style={{
-                    fill: '#44484c',
-                    fillOpacity: 1,
-                    stroke: '#000000',
-                    strokeWidth: 0.82506043,
-                    strokeLinecap: 'round',
-                    strokeLinejoin: 'round',
-                    strokeMiterlimit: 4,
-                    strokeOpacity: 1,
-                    strokeDasharray: 'none'
-                }} id='path3875' d='m 526.42859,111.07143 a 12.5,12.5 0 1 1 -25,0 12.5,12.5 0 1 1 25,0 z'
-                      transform='matrix(0,1.2120324,-1.2120324,0,204.9076,55.623182)'/>
-                <path transform='matrix(0,1.2120324,-1.2120324,0,267.53706,55.623182)'
-                      d='m 526.42859,111.07143 a 12.5,12.5 0 1 1 -25,0 12.5,12.5 0 1 1 25,0 z' id='path3877'
-                      style={{
-                          fill: '#44484c',
-                          fillOpacity: 1,
-                          stroke: '#000000',
-                          strokeWidth: 0.82506043,
-                          strokeLinecap: 'round',
-                          strokeLinejoin: 'round',
-                          strokeMiterlimit: 4,
-                          strokeOpacity: 1,
-                          strokeDasharray: 'none'
-                      }}/>
-                <rect style={{
-                    fill: '#44484c',
-                    fillOpacity: 1,
-                    stroke: '#000000',
-                    strokeWidth: 1,
-                    strokeLinecap: 'round',
-                    strokeLinejoin: 'round',
-                    strokeMiterlimit: 4,
-                    strokeOpacity: 1,
-                    strokeDasharray: 'none'
-                }} id='rect3890' width='22.1875' height='6.375' x='132.65929' y='490.63376'/>
-                <path transform='translate(-411.71571,302.44624)'
-                      d='m 545.5,258.1875 a 32.0625,32.0625 0 1 1 -64.125,0 32.0625,32.0625 0 1 1 64.125,0 z'
-                      id='path3907'
-                      style={{
-                          fill: '#44484c',
-                          fillOpacity: 1,
-                          stroke: '#000000',
-                          strokeWidth: 1,
-                          strokeLinecap: 'round',
-                          strokeLinejoin: 'round',
-                          strokeMiterlimit: 4,
-                          strokeOpacity: 1,
-                          strokeDasharray: 'none'
-                      }}/>
-                <path style={{
-                    fill: '#44484c',
-                    fillOpacity: 1,
-                    stroke: '#000000',
-                    strokeWidth: 1.42600417,
-                    strokeLinecap: 'round',
-                    strokeLinejoin: 'round',
-                    strokeMiterlimit: 4,
-                    strokeOpacity: 1,
-                    strokeDasharray: 'none'
-                }} id='path3909' d='m 545.5,258.1875 a 32.0625,32.0625 0 1 1 -64.125,0 32.0625,32.0625 0 1 1 64.125,0 z'
-                      transform='matrix(0.70126019,0,0,0.70126019,-258.33148,379.79953)'/>
-                <path id='path3911'
-                      d='m 100.56002,534.51999 c 2e-4,-2.14499 0.006,-3.41233 0.0158,-3.48046 0.0299,-0.20675 0.13156,-0.40432 0.28919,-0.56195 0.4752,-0.4752 1.28334,-0.33419 1.57638,0.27505 0.10984,0.22838 0.10221,-0.0485 0.10247,3.71783 l 2.3e-4,3.40192 -0.70143,-8.2e-4 c -0.38578,-4.5e-4 -0.83227,0.004 -0.99219,0.0105 l -0.29075,0.0113 3e-4,-3.37331 z'
-                      style={{
-                          fill: '#000000',
-                          stroke: '#000000',
-                          strokeWidth: 0.03125,
-                          strokeLinecap: 'round',
-                          strokeLinejoin: 'round',
-                          strokeMiterlimit: 4,
-                          strokeOpacity: 1,
-                          strokeDasharray: 'none'
-                      }}/>
-                <path id='path3913'
-                      d='m 101.44044,590.94079 c -0.38945,-0.0436 -0.7247,-0.33325 -0.8473,-0.73195 -0.0244,-0.0793 -0.0268,-0.33014 -0.0311,-3.23924 l -0.005,-3.1533 0.2308,0.0127 c 0.12694,0.007 0.57368,0.0127 0.99275,0.0127 l 0.76194,0 -0.004,3.15625 -0.004,3.15625 -0.0347,0.10157 c -0.10445,0.30532 -0.34564,0.54509 -0.65134,0.64749 -0.0998,0.0334 -0.28935,0.0509 -0.40814,0.0376 l 0,0 z'
-                      style={{
-                          fill: '#000000',
-                          fillOpacity: 1,
-                          stroke: '#000000',
-                          strokeWidth: 0.03125,
-                          strokeLinecap: 'round',
-                          strokeLinejoin: 'round',
-                          strokeMiterlimit: 4,
-                          strokeOpacity: 1,
-                          strokeDasharray: 'none'
-                      }}/>
-                <path id='path3915'
-                      d='m 124.70653,560.92405 c 0,-0.35469 -0.006,-0.80142 -0.0127,-0.99274 l -0.0127,-0.34784 3.23141,0.004 3.23141,0.004 0.11461,0.0419 c 0.43114,0.15748 0.6991,0.55501 0.66997,0.99393 -0.0161,0.24326 -0.11165,0.45768 -0.28091,0.63065 -0.13281,0.13572 -0.25762,0.20774 -0.48804,0.28161 -0.0498,0.016 -0.71149,0.021 -3.25781,0.0246 l -3.19532,0.005 0,-0.6449 0,0 z'
-                      style={{
-                          fill: '#000000',
-                          fillOpacity: 1,
-                          stroke: '#000000',
-                          strokeWidth: 0.03125,
-                          strokeLinecap: 'round',
-                          strokeLinejoin: 'round',
-                          strokeMiterlimit: 4,
-                          strokeOpacity: 1,
-                          strokeDasharray: 'none'
-                      }}/>
-                <path id='path3917'
-                      d='m 72.034659,561.55188 c -0.21504,-0.0284 -0.42503,-0.1369 -0.57817,-0.2988 -0.53275,-0.56321 -0.26401,-1.4625 0.49223,-1.64714 0.0705,-0.0172 0.68912,-0.0211 3.44981,-0.0215 l 3.36387,-5.6e-4 -0.0123,0.33203 c -0.007,0.18262 -0.0123,0.62911 -0.0123,0.9922 l 0,0.66016 -3.30468,-0.002 c -1.81758,-10e-4 -3.34688,-0.008 -3.39844,-0.0144 z'
-                      style={{
-                          fill: '#000000',
-                          fillOpacity: 1,
-                          stroke: '#000000',
-                          strokeWidth: 0.03125,
-                          strokeLinecap: 'round',
-                          strokeLinejoin: 'round',
-                          strokeMiterlimit: 4,
-                          strokeOpacity: 1,
-                          strokeDasharray: 'none'
-                      }}/>
-                <rect style={{
-                    fill: '#44484c',
-                    fillOpacity: 1,
-                    stroke: '#000000',
-                    strokeWidth: 1,
-                    strokeLinecap: 'round',
-                    strokeLinejoin: 'round',
-                    strokeMiterlimit: 4,
-                    strokeOpacity: 1,
-                    strokeDasharray: 'none'
-                }} id='rect3919' width='25.75' height='25.125' x='111.78429' y='745.50873' ry='3.375'/>
-                <path style={{
-                    fill: '#000000',
-                    stroke: '#000000',
-                    strokeWidth: 1,
-                    strokeLinecap: 'round',
-                    strokeLinejoin: 'round',
-                    strokeMiterlimit: 4,
-                    strokeOpacity: 1,
-                    strokeDasharray: 'none'
-                }} id='path3921'
-                      d='m 752.8125,340.15625 a 8.84375,8.84375 0 1 1 -17.6875,0 8.84375,8.84375 0 1 1 17.6875,0 z'
-                      transform='translate(-619.40321,418.13374)'/>
-                <path style={{
-                    fill: '#000000',
-                    stroke: '#000000',
-                    strokeWidth: 0.90469444,
-                    strokeLinecap: 'round',
-                    strokeLinejoin: 'round',
-                    strokeMiterlimit: 4,
-                    strokeOpacity: 1,
-                    strokeDasharray: 'none'
-                }} id='path3014' d='m 134.97306,862.5577 0,-11.46794 9.93153,5.73397 z'
-                      transform='matrix(1.1053456,0,0,1.1053456,-20.313598,-268.53424)'/>
-                <path transform='matrix(-1.1053456,0,0,1.1053456,223.67293,-268.53424)'
-                      d='m 134.97306,862.5577 0,-11.46794 9.93153,5.73397 z' id='path3788'
-                      style={{
-                          fill: '#000000',
-                          stroke: '#000000',
-                          strokeWidth: 0.90469444,
-                          strokeLinecap: 'round',
-                          strokeLinejoin: 'round',
-                          strokeMiterlimit: 4,
-                          strokeOpacity: 1,
-                          strokeDasharray: 'none'
-                      }}/>
-                <path transform='matrix(0,-1.1053456,1.1053456,0,-845.5054,800.7181)'
-                      d='m 134.97306,862.5577 0,-11.46794 9.93153,5.73397 z' id='path3790'
-                      style={{
-                          fill: '#000000',
-                          stroke: '#000000',
-                          strokeWidth: 0.90469444,
-                          strokeLinecap: 'round',
-                          strokeLinejoin: 'round',
-                          strokeMiterlimit: 4,
-                          strokeOpacity: 1,
-                          strokeDasharray: 'none'
-                      }}/>
-                <path style={{
-                    fill: '#000000',
-                    stroke: '#000000',
-                    strokeWidth: 0.90469444,
-                    strokeLinecap: 'round',
-                    strokeLinejoin: 'round',
-                    strokeMiterlimit: 4,
-                    strokeOpacity: 1,
-                    strokeDasharray: 'none'
-                }} id='path3792' d='m 134.97306,862.5577 0,-11.46794 9.93153,5.73397 z'
-                      transform='matrix(0,1.1053456,1.1053456,0,-845.5054,556.73157)'/>
+        <svg
+            xmlns='http://www.w3.org/2000/svg'
+            height='100%'
+            viewBox='0 0 994 425'
+        >
+            <g fill='none' fillRule='evenodd' stroke='none' strokeWidth='1'>
+                <g transform='translate(1 1)'>
+                    <g fillRule='nonzero' stroke='#000'>
+                        <path
+                            fill='#44484C'
+                            d='M113.47 6.844V2.656C113.47 1.4 112.186 0 110.814 0h-26.25C44.07 0 7.824 32.662 1.612 55.844c-.283 1.058-.385 3.182 1.459 3.182h4.662L113.47 6.844z'
+                        />
+                        <path
+                            fill='#00BBDB'
+                            d='M136.512 8.383V421.07c0 1.024-.506 1.797-1.797 1.797h-49.64C33.395 422.867 0 377.169 0 337.792V89.852c0-57.886 56.764-84.72 84.719-84.72h48.79c2.487 0 3.003 1.368 3.003 3.25z'
+                        />
+                        <path
+                            fill='#44484C'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            strokeWidth='1'
+                            d='M87.355 200.042c0 8.367-6.783 15.15-15.15 15.15-8.368 0-15.15-6.783-15.15-15.15 0-8.368 6.782-15.15 15.15-15.15 8.367 0 15.15 6.782 15.15 15.15h0z'
+                        />
+                        <path
+                            fill='#44484C'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            strokeWidth='1'
+                            d='M87.355 262.671c0 8.367-6.783 15.15-15.15 15.15-8.368 0-15.15-6.783-15.15-15.15s6.782-15.15 15.15-15.15c8.367 0 15.15 6.783 15.15 15.15h0z'
+                        />
+                        <path
+                            fill='#44484C'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            strokeWidth='1'
+                            d='M40.89 246.507c-8.367 0-15.15-6.783-15.15-15.15 0-8.368 6.783-15.151 15.15-15.151s15.15 6.783 15.15 15.15c0 8.368-6.783 15.15-15.15 15.15h0z'
+                        />
+                        <path
+                            fill='#44484C'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            strokeWidth='1'
+                            d='M103.52 246.507c-8.368 0-15.151-6.783-15.151-15.15 0-8.368 6.783-15.151 15.15-15.151 8.368 0 15.15 6.783 15.15 15.15 0 8.368-6.782 15.15-15.15 15.15h0z'
+                        />
+                        <path
+                            fill='#44484C'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            d='M103.264 43.469H125.452V49.844H103.264z'
+                        />
+                        <path
+                            fill='#44484C'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            d='M104.389 113.469c0 17.707-14.355 32.062-32.063 32.062-17.707 0-32.062-14.355-32.062-32.062 0-17.708 14.355-32.063 32.062-32.063 17.708 0 32.063 14.355 32.063 32.063z'
+                        />
+                        <path
+                            fill='#44484C'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            strokeWidth='1'
+                            d='M94.81 113.691c0 12.418-10.066 22.484-22.484 22.484-12.417 0-22.484-10.066-22.484-22.484 0-12.418 10.067-22.484 22.484-22.484 12.418 0 22.484 10.066 22.484 22.484z'
+                        />
+                        <path
+                            fill='#000'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            strokeWidth='0.031'
+                            d='M71.165 87.355c0-2.145.006-3.412.015-3.48.03-.207.132-.405.29-.562a.982.982 0 011.576.275c.11.228.102-.049.102 3.717v3.402h-.7c-.387 0-.833.004-.993.01l-.29.011v-3.373h0z'
+                        />
+                        <path
+                            fill='#000'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            strokeWidth='0.031'
+                            d='M72.045 143.776c-.39-.044-.725-.333-.847-.732-.025-.08-.027-.33-.031-3.24l-.005-3.153.23.013c.127.007.574.013.993.013h.762l-.004 3.156-.004 3.156-.035.102a1.037 1.037 0 01-.651.647c-.1.034-.29.051-.408.038h0z'
+                        />
+                        <path
+                            fill='#000'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            strokeWidth='0.031'
+                            d='M95.311 113.76c0-.356-.006-.802-.013-.994l-.012-.348 3.231.004 3.231.004.115.042c.431.158.7.555.67.994a.974.974 0 01-.28.631c-.134.136-.259.208-.489.282-.05.016-.711.02-3.258.024l-3.195.005v-.645h0z'
+                        />
+                        <path
+                            fill='#000'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            strokeWidth='0.031'
+                            d='M42.64 114.387a.988.988 0 01-.579-.299.985.985 0 01.492-1.647c.07-.017.69-.021 3.45-.022h3.364l-.012.332c-.007.183-.013.629-.013.992v.66l-3.304-.002a253.448 253.448 0 01-3.399-.014h0z'
+                        />
+                        <path
+                            fill='#44484C'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            d='M82.389 298.344H108.139V323.469H82.389z'
+                        />
+                        <path
+                            fill='#000'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            d='M104.014 311.125a8.844 8.844 0 11-17.688 0 8.844 8.844 0 0117.688 0h0z'
+                        />
+                        <path
+                            fill='#000'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            strokeWidth='1'
+                            d='M99.482768 237.725128L99.482768 225.049091 110.460541 231.38711z'
+                        />
+                        <path
+                            fill='#000'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            strokeWidth='1'
+                            d='M34.107767 237.725128L34.107767 225.049091 45.08554 231.38711z'
+                            transform='matrix(-1 0 0 1 79.193 0)'
+                        />
+                        <path
+                            fill='#000'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            strokeWidth='1'
+                            d='M66.6965414 205.210364L66.6965414 192.534327 77.6743144 198.872346z'
+                            transform='rotate(-90 72.185 198.872)'
+                        />
+                        <path
+                            fill='#000'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            strokeWidth='1'
+                            d='M66.6965414 270.585363L66.6965414 257.909326 77.6743144 264.247344z'
+                            transform='scale(-1 1) rotate(90 0 192.062)'
+                        />
+                    </g>
+                    <g fillRule='nonzero' transform='translate(854.604)'>
+                        <path
+                            fill='#44484C'
+                            stroke='#000'
+                            d='M23 6.84V2.656C23 1.4 24.284 0 25.656 0h26.246c40.488 0 76.729 32.647 82.94 55.82.283 1.057.384 3.18-1.459 3.18h-4.662L23 6.84z'
+                        />
+                        <path
+                            fill='#FF5F53'
+                            stroke='#000'
+                            d='M0 9.244v411.962C0 422.228.508 423 1.803 423h49.818C103.485 423 137 377.383 137 338.075V90.57C137 32.787 80.033 6 51.978 6H3.014C.519 6 0 7.366 0 9.244h0z'
+                        />
+                        <path
+                            fill='#44484C'
+                            stroke='#000'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            d='M11 43.6326553L18.4645931 43.6326553 18.4645931 36 24.659233 36 24.659233 43.6647179 32 43.6647179 32 50.0787203 24.6902386 50.0787203 24.6902386 58 18.40268 58 18.40268 50.0787203 11.0309075 50.0787203z'
+                        />
+                        <path
+                            fill='#44484C'
+                            stroke='#000'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            strokeWidth='1'
+                            d='M79 79c0 8.284-6.716 15-15 15-8.284 0-15-6.716-15-15 0-8.284 6.716-15 15-15 8.284 0 15 6.716 15 15h0z'
+                        />
+                        <path
+                            fill='#44484C'
+                            stroke='#000'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            strokeWidth='1'
+                            d='M79 142c0 8.284-6.716 15-15 15-8.284 0-15-6.716-15-15 0-8.284 6.716-15 15-15 8.284 0 15 6.716 15 15h0z'
+                        />
+                        <path
+                            fill='#44484C'
+                            stroke='#000'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            strokeWidth='1'
+                            d='M32 126c-8.284 0-15-6.716-15-15 0-8.284 6.716-15 15-15 8.284 0 15 6.716 15 15 0 8.284-6.716 15-15 15h0z'
+                        />
+                        <path
+                            fill='#44484C'
+                            stroke='#000'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            strokeWidth='1'
+                            d='M95 126c-8.284 0-15-6.716-15-15 0-8.284 6.716-15 15-15 8.284 0 15 6.716 15 15 0 8.284-6.716 15-15 15h0z'
+                        />
+                        <path
+                            fill='#999595'
+                            stroke='#000'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            strokeWidth='1'
+                            d='M58 305c0 9.389-7.611 17-17 17s-17-7.611-17-17 7.611-17 17-17 17 7.611 17 17h0z'
+                        />
+                        <path
+                            fill='#3A3D40'
+                            stroke='#000'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            strokeWidth='1'
+                            d='M53 304.5c0 6.904-5.596 12.5-12.5 12.5S28 311.404 28 304.5 33.596 292 40.5 292 53 297.596 53 304.5h0z'
+                        />
+                        <path
+                            fill='#000'
+                            stroke='#000'
+                            d='M32 304.183h2.545V312h12.91v-7.817H50c-2.804-2.545-6.577-6.02-9-8.183-2.933 2.632-6.024 5.471-9 8.183h0zm6 .13h6v4.994h-6v-4.993z'
+                        />
+                        <path
+                            fill='#44484C'
+                            stroke='#000'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            d='M96 227c0 17.673-14.327 32-32 32-17.673 0-32-14.327-32-32 0-17.673 14.327-32 32-32 17.673 0 32 14.327 32 32z'
+                        />
+                        <path
+                            fill='#44484C'
+                            stroke='#000'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            strokeWidth='1'
+                            d='M86 226.5c0 12.426-10.074 22.5-22.5 22.5S41 238.926 41 226.5 51.074 204 63.5 204 86 214.074 86 226.5z'
+                        />
+                        <path
+                            fill='#000'
+                            stroke='#000'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            strokeWidth='0.031'
+                            d='M63 200.495c0-2.229.01-3.545.016-3.616.03-.215.133-.42.292-.584a.975.975 0 011.588.286c.111.237.103-.05.104 3.863v3.534h-.707c-.389-.001-.839.004-1 .01L63 204v-3.505h0z'
+                        />
+                        <path
+                            fill='#000'
+                            stroke='#000'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            strokeWidth='0.031'
+                            d='M63.895 256.996a1.026 1.026 0 01-.854-.72c-.024-.077-.027-.323-.03-3.18L63 250l.232.012c.128.007.578.013 1 .013H65v6.198l-.035.1c-.105.3-.348.535-.656.636-.101.032-.292.05-.411.037h0-.003z'
+                        />
+                        <path
+                            fill='#000'
+                            stroke='#000'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            strokeWidth='0.031'
+                            d='M87.025 227.35c0-.357-.01-.807-.012-1L87 226l3.12.004 3.12.004.111.042a.997.997 0 01.647 1.001 1 1 0 01-.271.636c-.129.136-.25.209-.472.283-.048.016-.687.021-3.145.025l-3.085.005v-.65h0z'
+                        />
+                        <path
+                            fill='#000'
+                            stroke='#000'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            strokeWidth='0.031'
+                            d='M33.904 227.983a1.059 1.059 0 01-.61-.3c-.562-.568-.279-1.475.519-1.66.075-.018.727-.022 3.639-.022L41 226l-.013.335c-.01.184-.012.634-.012 1V228l-3.486-.002a279.78 279.78 0 01-3.585-.015h0z'
+                        />
+                        <path
+                            fill='#FFF'
+                            d='M56 86.98c0-.01 1.244-1.888 2.765-4.174l2.764-4.159-2.45-3.727c-1.347-2.05-2.48-3.772-2.519-3.824L56.492 71h3.791l1.626 2.568c.894 1.412 1.641 2.562 1.66 2.556.02-.011.747-1.158 1.617-2.559l1.582-2.548 1.868-.01c1.027-.011 1.868 0 1.868.01 0 .011-1.127 1.75-2.503 3.867-1.432 2.203-2.496 3.873-2.487 3.905.01.03 1.246 1.881 2.75 4.112A539.281 539.281 0 0171 86.978c0 .011-.874.02-1.941.02h-1.942l-1.805-2.779c-1.457-2.244-1.813-2.77-1.848-2.732-.024.025-.845 1.276-1.825 2.78L59.858 87h-1.93c-1.06 0-1.928-.011-1.928-.017v-.002z'
+                        />
+                        <path
+                            fill='#FFF'
+                            d='M87.003 117.938c.06-.159 6.055-15.529 6.132-15.72l.086-.218H96.6l3.191 7.956 3.21 8c.014.035-.335.042-1.725.034l-1.742-.01-.702-1.825-.702-1.825-3.218.01-3.218.01-.664 1.825-.663 1.825h-1.693c-1.599 0-1.692-.01-1.67-.06v-.002zm10.085-6.305c-.01-.024-.509-1.369-1.111-2.988-.602-1.62-1.105-2.932-1.118-2.917-.017.02-1.304 3.537-2.161 5.905-.013.034.441.043 2.196.043 1.754 0 2.208-.01 2.194-.043z'
+                        />
+                        <path
+                            fill='#FFF'
+                            d='M58 142v-8l3.85.017c3.839.017 4.253.03 5.023.15 1.168.182 2.126.795 2.76 1.764a3.824 3.824 0 01-.38 4.687c-.276.301-.54.512-.91.724l-.285.165.231.08a4.56 4.56 0 011.565.92c.472.443.877 1.146 1.054 1.825.08.309.09.408.092.99 0 .503-.01.709-.06.934-.196.918-.629 1.771-1.203 2.373-.736.77-1.638 1.16-2.926 1.267-.642.053-3.768.103-6.49.104H58v-8zm7.763 5.277c.719-.061 1.102-.211 1.482-.58.393-.38.556-.82.555-1.498 0-1.044-.553-1.776-1.51-2.005-.554-.134-.879-.151-3.046-.168l-2.116-.016v4.302h2.116c1.164 0 2.297-.016 2.519-.035zm-1.253-6.913c1.135-.033 1.362-.067 1.771-.266a1.65 1.65 0 00.872-1.001c.098-.306.098-.93 0-1.24-.184-.582-.605-.957-1.252-1.115-.202-.049-.555-.059-2.504-.072l-2.27-.014v3.742h1.182c.65 0 1.64-.015 2.201-.03v-.004z'
+                        />
+                        <path
+                            fill='#FFF'
+                            d='M30.877 115.625v-3.373l-2.938-4.612A976.572 976.572 0 0125 103.014c0-.01.843-.014 1.874-.014h1.874l1.9 3.177c1.414 2.361 1.91 3.165 1.94 3.134.02-.022.866-1.451 1.877-3.176L36.303 103H40l-.05.08c-.029.042-1.36 2.13-2.96 4.64l-2.91 4.562V119H30.877v-3.374z'
+                        />
+                    </g>
+                    <g
+                        stroke='#373435'
+                        strokeWidth='0.5'
+                        transform='translate(136.604 5.8)'
+                    >
+                        <path
+                            fill='#30363A'
+                            d='M16.439 0h687.485c0 8.093 5.97 14.909 13.764 16.186V417.4H0V16.38c9.034 0 16.439-7.357 16.439-16.38z'
+                        />
+                        <path
+                            fill='#373435'
+                            d='M30.744 13.012h661.204c4.808 0 8.723 3.913 8.723 8.717v367.937c0 4.803-3.915 8.716-8.723 8.716H650.97v-3.72a4.11 4.11 0 00-4.11-4.105h-25.122a4.11 4.11 0 00-4.11 4.106v3.719H249.944v-9.414c0-3.099-3.257-5.655-7.328-5.655-4.032 0-7.288 2.556-7.288 5.655v9.414H105.064v-3.72a4.11 4.11 0 00-4.11-4.105H75.833a4.085 4.085 0 00-4.11 4.106v3.719H30.745c-4.807 0-8.723-3.913-8.723-8.716V21.729c0-4.804 3.916-8.717 8.723-8.717z'
+                        />
+                        <path fill='#606062' d='M73.07 44.042H643.617V365.35H73.07z'/>
+                    </g>
+                </g>
             </g>
         </svg>
-    )
-}
-
-export function RightJoyCon() {
-    return (
-        <svg id='svg2' version='1.1'
-             style={{height: '100%'}}
-             viewBox='0 0 137.63 424.6'>
-        <defs id='defs4'>
-                <filter id='filter3994' color-interpolation-filters='sRGB'>
-                    <feGaussianBlur stdDeviation='0.95' id='feGaussianBlur3996'/>
-                </filter>
-            </defs>
-            <g id='layer1' transform='translate(-1033.3,-446.62)'>
-                <path style={{
-                    fill: '#44484c',
-                    fillOpacity: 1,
-                    stroke: '#000000',
-                    strokeWidth: 1,
-                    strokeLinecap: 'butt',
-                    strokeLinejoin: 'miter',
-                    strokeOpacity: 1
-                }}
-                      d='m 1056.7015,454.00874 0,-4.1875 c 0,-1.25689 1.2838,-2.65625 2.6563,-2.65625 l 26.25,0 c 40.4935,0 76.7398,32.66191 82.9515,55.8441 0.2833,1.05756 0.385,3.18198 -1.4584,3.18198 l -4.6625,0 z'
-                      id='path3818'/>
-                <path style={{
-                    fill: '#ff5f53',
-                    fillOpacity: 1,
-                    stroke: '#000000',
-                    strokeWidth: 1,
-                    strokeLinecap: 'butt',
-                    strokeLinejoin: 'miter',
-                    strokeOpacity: 1
-                }}
-                      d='m 1033.8578,456.16499 0,412.68747 c 0,1.0235 0.5059,1.7969 1.7969,1.7969 l 49.6406,0 c 51.6795,0 85.0749,-45.69766 85.0749,-85.07485 l 0,-247.94077 c 0,-57.88508 -56.7644,-84.71894 -84.719,-84.71894 l -48.7906,0 c -2.4861,0 -3.0028,1.36797 -3.0028,3.25019 z'
-                      id='path3923'/>
-                <path style={{
-                    fill: '#44484c',
-                    fillOpacity: 1,
-                    stroke: '#000000',
-                    strokeWidth: 1,
-                    strokeLinecap: 'round',
-                    strokeLinejoin: 'round',
-                    strokeOpacity: 1
-                }}
-                      d='m 1045.1376,490.63157 7.6077,0 0,-7.51301 6.3134,0 0,7.54457 7.4815,0 0,6.31346 -7.4499,0 0,7.79711 -6.4081,0 0,-7.79711 -7.5131,0 z'
-                      id='path3093'/>
-                <path style={{
-                    fill: '#44484c',
-                    fillOpacity: 1,
-                    stroke: '#000000',
-                    strokeWidth: 0.82506043,
-                    strokeLinecap: 'round',
-                    strokeLinejoin: 'round',
-                    strokeMiterlimit: 4,
-                    strokeOpacity: 1,
-                    strokeDasharray: 'none'
-                }} id='path3095' d='m 526.42859,111.07143 a 12.5,12.5 0 1 1 -25,0 12.5,12.5 0 1 1 25,0 z'
-                      transform='matrix(1.2120324,0,0,1.2120324,474.70978,392.04867)'/>
-                <path transform='matrix(1.2120324,0,0,1.2120324,474.70978,454.67813)'
-                      d='m 526.42859,111.07143 a 12.5,12.5 0 1 1 -25,0 12.5,12.5 0 1 1 25,0 z' id='path3865'
-                      style={{
-                          fill: '#44484c',
-                          fillOpacity: 1,
-                          stroke: '#000000',
-                          strokeWidth: 0.82506043,
-                          strokeLinecap: 'round',
-                          strokeLinejoin: 'round',
-                          strokeMiterlimit: 4,
-                          strokeOpacity: 1,
-                          strokeDasharray: 'none'
-                      }}/>
-                <path transform='matrix(0,1.2120324,-1.2120324,0,1200.9152,-64.912531)'
-                      d='m 526.42859,111.07143 a 12.5,12.5 0 1 1 -25,0 12.5,12.5 0 1 1 25,0 z' id='path3867'
-                      style={{
-                          fill: '#44484c',
-                          fillOpacity: 1,
-                          stroke: '#000000',
-                          strokeWidth: 0.82506043,
-                          strokeLinecap: 'round',
-                          strokeLinejoin: 'round',
-                          strokeMiterlimit: 4,
-                          strokeOpacity: 1,
-                          strokeDasharray: 'none'
-                      }}/>
-                <path style={{
-                    fill: '#44484c',
-                    fillOpacity: 1,
-                    stroke: '#000000',
-                    strokeWidth: 0.82506043,
-                    strokeLinecap: 'round',
-                    strokeLinejoin: 'round',
-                    strokeMiterlimit: 4,
-                    strokeOpacity: 1,
-                    strokeDasharray: 'none'
-                }} id='path3869' d='m 526.42859,111.07143 a 12.5,12.5 0 1 1 -25,0 12.5,12.5 0 1 1 25,0 z'
-                      transform='matrix(0,1.2120324,-1.2120324,0,1263.5447,-64.912531)'/>
-                <path transform='matrix(1.3463589,0,0,1.3463589,382.91658,602.88671)'
-                      d='m 526.42859,111.07143 a 12.5,12.5 0 1 1 -25,0 12.5,12.5 0 1 1 25,0 z' id='path3879'
-                      style={{
-                          fill: '#999595',
-                          fillOpacity: 1,
-                          stroke: '#000000',
-                          strokeWidth: 0.74274403,
-                          strokeLinecap: 'round',
-                          strokeLinejoin: 'round',
-                          strokeMiterlimit: 4,
-                          strokeOpacity: 1,
-                          strokeDasharray: 'none'
-                      }}/>
-                <path style={{
-                    fill: '#3a3d40',
-                    fillOpacity: 1,
-                    stroke: '#000000',
-                    strokeWidth: 0.99448955,
-                    strokeLinecap: 'round',
-                    strokeLinejoin: 'round',
-                    strokeMiterlimit: 4,
-                    strokeOpacity: 1,
-                    strokeDasharray: 'none'
-                }} id='path3881' d='m 526.42859,111.07143 a 12.5,12.5 0 1 1 -25,0 12.5,12.5 0 1 1 25,0 z'
-                      transform='matrix(1.005541,0,0,1.005541,558.07258,640.89492)'/>
-                <path style={{
-                    fill: '#000000',
-                    stroke: '#000000',
-                    strokeWidth: 1,
-                    strokeLinecap: 'butt',
-                    strokeLinejoin: 'miter',
-                    strokeMiterlimit: 4,
-                    strokeOpacity: 1,
-                    strokeDasharray: 'none'
-                }}
-                      d='m 1066.0076,751.91216 2.4839,0 0,7.81748 c 4.164,0 8.8172,0 12.6021,0 l 0,-7.81748 2.4838,0 c -2.7365,-2.54478 -6.4194,-6.02 -8.7849,-8.1836 -2.8629,2.63179 -5.8803,5.47149 -8.7849,8.1836 z m 5.8566,0.13069 c 1.9375,0 4.1005,0 5.8566,0 l 0,4.99384 c -1.9355,0 -4.098,0 -5.8566,0 z'
-                      id='path3883'/>
-                <path style={{
-                    fill: '#44484c',
-                    fillOpacity: 1,
-                    stroke: '#000000',
-                    strokeWidth: 1,
-                    strokeLinecap: 'round',
-                    strokeLinejoin: 'round',
-                    strokeMiterlimit: 4,
-                    strokeOpacity: 1,
-                    strokeDasharray: 'none'
-                }} id='path3888' d='m 545.5,258.1875 a 32.0625,32.0625 0 1 1 -64.125,0 32.0625,32.0625 0 1 1 64.125,0 z'
-                      transform='translate(584.35788,416.07124)'/>
-                <path transform='matrix(0.70126019,0,0,0.70126019,737.74208,493.42453)'
-                      d='m 545.5,258.1875 a 32.0625,32.0625 0 1 1 -64.125,0 32.0625,32.0625 0 1 1 64.125,0 z'
-                      id='path3892'
-                      style={{
-                          fill: '#44484c',
-                          fillOpacity: 1,
-                          stroke: '#000000',
-                          strokeWidth: 1.42600417,
-                          strokeLinecap: 'round',
-                          strokeLinejoin: 'round',
-                          strokeMiterlimit: 4,
-                          strokeOpacity: 1,
-                          strokeDasharray: 'none'
-                      }}/>
-                <path
-                    style={{
-                        fill: '#000000',
-                        stroke: '#000000',
-                        strokeWidth: 0.03125,
-                        strokeLinecap: 'round',
-                        strokeLinejoin: 'round',
-                        strokeMiterlimit: 4,
-                        strokeOpacity: 1,
-                        strokeDasharray: 'none'
-                    }}
-                    d='m 1096.6335,648.14499 c 2e-4,-2.14499 0.01,-3.41233 0.016,-3.48046 0.03,-0.20675 0.1316,-0.40432 0.2892,-0.56195 0.4752,-0.4752 1.2834,-0.33419 1.5764,0.27505 0.1098,0.22838 0.1022,-0.0485 0.1025,3.71783 l 2e-4,3.40192 -0.7014,-8.2e-4 c -0.3858,-4.5e-4 -0.8323,0.004 -0.9922,0.0105 l -0.2908,0.0113 3e-4,-3.37331 z'
-                    id='path3899'/>
-                <path style={{
-                    fill: '#000000',
-                    fillOpacity: 1,
-                    stroke: '#000000',
-                    strokeWidth: 0.03125,
-                    strokeLinecap: 'round',
-                    strokeLinejoin: 'round',
-                    strokeMiterlimit: 4,
-                    strokeOpacity: 1,
-                    strokeDasharray: 'none'
-                }}
-                      d='m 1097.5139,704.56579 c -0.3894,-0.0436 -0.7247,-0.33325 -0.8473,-0.73195 -0.024,-0.0793 -0.027,-0.33014 -0.031,-3.23924 l -0.01,-3.1533 0.2308,0.0127 c 0.127,0.007 0.5737,0.0127 0.9928,0.0127 l 0.7619,0 0,3.15625 0,3.15625 -0.035,0.10157 c -0.1044,0.30532 -0.3456,0.54509 -0.6513,0.64749 -0.1,0.0334 -0.2894,0.0509 -0.4081,0.0376 l 0,0 z'
-                      id='path3901'/>
-                <path style={{
-                    fill: '#000000',
-                    fillOpacity: 1,
-                    stroke: '#000000',
-                    strokeWidth: 0.03125,
-                    strokeLinecap: 'round',
-                    strokeLinejoin: 'round',
-                    strokeMiterlimit: 4,
-                    strokeOpacity: 1,
-                    strokeDasharray: 'none'
-                }}
-                      d='m 1120.78,674.54905 c 0,-0.35469 -0.01,-0.80142 -0.013,-0.99274 l -0.013,-0.34784 3.2314,0.004 3.2315,0.004 0.1146,0.0419 c 0.4311,0.15748 0.6991,0.55501 0.6699,0.99393 -0.016,0.24326 -0.1116,0.45768 -0.2809,0.63065 -0.1328,0.13572 -0.2576,0.20774 -0.488,0.28161 -0.05,0.016 -0.7115,0.021 -3.2578,0.0246 l -3.1953,0.005 0,-0.6449 0,0 z'
-                      id='path3903'/>
-                <path style={{
-                    fill: '#000000',
-                    fillOpacity: 1,
-                    stroke: '#000000',
-                    strokeWidth: 0.03125,
-                    strokeLinecap: 'round',
-                    strokeLinejoin: 'round',
-                    strokeMiterlimit: 4,
-                    strokeOpacity: 1,
-                    strokeDasharray: 'none'
-                }}
-                      d='m 1068.1082,675.17688 c -0.2151,-0.0284 -0.4251,-0.1369 -0.5782,-0.2988 -0.5328,-0.56321 -0.264,-1.4625 0.4922,-1.64714 0.071,-0.0172 0.6891,-0.0211 3.4498,-0.0215 l 3.3639,-5.6e-4 -0.012,0.33203 c -0.01,0.18262 -0.012,0.62911 -0.012,0.9922 l 0,0.66016 -3.3047,-0.002 c -1.8176,-10e-4 -3.3469,-0.008 -3.3984,-0.0144 z'
-                      id='path3905'/>
-                <path style={{fill: '#ffffff', stroke: 'none'}}
-                      d='m 1090.29,534.77866 c 0,-0.011 1.2297,-1.8951 2.7327,-4.1899 l 2.7327,-4.1728 -2.4219,-3.741 c -1.332,-2.0575 -2.4524,-3.7844 -2.4897,-3.8374 l -0.068,-0.096 1.8741,0 1.8741,0 1.6069,2.5766 c 0.8838,1.4172 1.6223,2.5715 1.6411,2.5652 0.019,-0.011 0.7381,-1.1618 1.5984,-2.5678 l 1.564,-2.5565 1.8463,-0.011 c 1.0154,-0.011 1.8462,0 1.8462,0.011 0,0.011 -1.1131,1.7561 -2.4737,3.8803 -1.4161,2.2111 -2.4674,3.8862 -2.459,3.9184 0.01,0.031 1.2317,1.8881 2.7191,4.1272 1.4874,2.239 2.7044,4.08 2.7044,4.0912 0,0.011 -0.8636,0.019 -1.9192,0.019 l -1.9192,0 -1.7839,-2.7879 c -1.4407,-2.2517 -1.7922,-2.7792 -1.827,-2.7417 -0.024,0.025 -0.8356,1.2807 -1.8041,2.7894 l -1.761,2.743 -1.9067,0 c -1.0487,0 -1.9068,-0.011 -1.9068,-0.017 z'
-                      id='path3808'/>
-                <path style={{fill: '#ffffff', stroke: 'none'}}
-                      d='m 1121.2586,565.85776 c 0.06,-0.1594 6.0657,-15.5775 6.142,-15.7691 l 0.087,-0.219 1.6913,0 1.6913,0 3.1969,7.9809 c 1.7583,4.3895 3.2049,8.0007 3.2147,8.025 0.014,0.035 -0.3352,0.042 -1.7274,0.034 l -1.7454,-0.01 -0.7027,-1.8308 -0.7027,-1.8308 -3.2235,0.01 -3.2235,0.01 -0.6646,1.831 -0.6646,1.8309 -1.6961,0 c -1.6009,0 -1.6949,-0.01 -1.673,-0.061 z m 10.1023,-6.3252 c -0.01,-0.024 -0.5101,-1.3729 -1.1133,-2.9974 -0.6031,-1.6245 -1.1071,-2.9412 -1.1199,-2.9261 -0.017,0.02 -1.3062,3.548 -2.1646,5.9235 -0.013,0.034 0.4421,0.043 2.1993,0.043 1.7577,0 2.2118,-0.01 2.1985,-0.043 z'
-                      id='path3810'/>
-                <path style={{fill: '#ffffff', stroke: 'none'}}
-                      d='m 1091.6637,589.64516 0,-8.0101 3.9597,0.017 c 3.9479,0.017 4.3741,0.03 5.1658,0.15 1.2013,0.1824 2.1874,0.7962 2.8382,1.7668 0.9894,1.4755 0.8297,3.4004 -0.3893,4.6926 -0.2842,0.3013 -0.5564,0.5122 -0.9357,0.7248 l -0.2945,0.165 0.2385,0.079 c 0.5815,0.1918 1.1967,0.5442 1.6096,0.9222 0.4846,0.4434 0.9019,1.1471 1.0833,1.8267 0.083,0.3094 0.092,0.4089 0.095,0.9908 0,0.5046 -0.011,0.7103 -0.061,0.9359 -0.202,0.9189 -0.6473,1.7732 -1.2383,2.3756 -0.7564,0.7709 -1.6842,1.1619 -3.0094,1.2683 -0.6601,0.053 -3.8754,0.1033 -6.6759,0.1044 l -2.3863,0 0,-8.0101 z m 7.9838,5.2825 c 0.7397,-0.061 1.1341,-0.2114 1.5249,-0.58 0.4041,-0.3812 0.5715,-0.8216 0.5702,-1.4999 0,-1.0456 -0.5682,-1.7782 -1.5522,-2.0082 -0.5699,-0.1332 -0.9044,-0.1511 -3.1335,-0.1676 l -2.1765,-0.016 0,2.1535 0,2.1536 2.1765,0 c 1.197,-3e-4 2.3628,-0.016 2.5906,-0.035 l 0,0 z m -1.2882,-6.9206 c 1.1673,-0.033 1.401,-0.067 1.8218,-0.2663 0.4402,-0.2088 0.7503,-0.5556 0.8968,-1.003 0.1002,-0.3058 0.1,-0.9302 -10e-4,-1.241 -0.1887,-0.5831 -0.6217,-0.9586 -1.2873,-1.1163 -0.2076,-0.049 -0.5707,-0.059 -2.5755,-0.072 l -2.3338,-0.014 0,1.8731 0,1.8732 1.2149,0 c 0.6683,0 1.687,-0.015 2.2639,-0.031 l 0,0 z'
-                      id='path3814'/>
-                <path style={{fill: '#ffffff', stroke: 'none'}}
-                      d='m 1064.7658,562.86006 0,-3.3693 -2.913,-4.6053 c -1.6022,-2.5328 -2.9131,-4.6117 -2.9131,-4.6196 0,-0.01 0.836,-0.014 1.8577,-0.014 l 1.8578,4e-4 1.8838,3.1716 c 1.4011,2.3587 1.8938,3.1611 1.9224,3.1307 0.021,-0.022 0.8587,-1.4499 1.8611,-3.1719 l 1.8224,-3.1311 1.8323,0 1.8322,0 -0.05,0.079 c -0.028,0.043 -1.3481,2.1286 -2.9345,4.6344 l -2.8842,4.5559 0,3.3546 0,3.3546 -1.5874,0 -1.5873,0 0,-3.3694 z'
-                      id='path3816'/>
-            </g>
-        </svg>
-    )
+    );
 }

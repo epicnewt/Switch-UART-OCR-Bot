@@ -4,7 +4,7 @@ import Tesseract from 'tesseract.js';
 import ISerialPort from 'serialport';
 import {ButtonEventData, Controller} from './controller/controller';
 import {tap} from 'rxjs/operators';
-import {LeftJoyCon, RightJoyCon} from './Switch';
+import {Switch} from './Switch';
 
 const {desktopCapturer} = Electron;
 
@@ -158,14 +158,8 @@ function App() {
             );
         case HACK:
             return (
-                <div style={{zoom:1, overflowX: 'scroll', height: '100%'}}>
-                    <div style={{height: '95%', margin: '2.5%', display: 'flex', flexDirection: 'row'}}>
-                    <LeftJoyCon key={1}/>
-                    <div style={{width: 489 / 9 * 16, height: '100%'}}>
-                        <div style={{width: 489 / 9 * 16, background: 'black', position: 'absolute', bottom: '2.5%', top: '3.2%'}} />
-                    </div>
-                    <RightJoyCon key={0}/>
-                    </div>
+                <div style={{position: 'absolute', top: '2.5%', left: '2.5%', bottom: '2.5%', right: '2.5%'}}>
+                    <Switch/>
                 </div>
             )
     }
