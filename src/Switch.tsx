@@ -1,6 +1,31 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import {Observable, Subscription} from 'rxjs';
+import {ButtonEventData} from './controller/controller';
 
-export function Switch() {
+interface SwitchProps {
+    children?: React.ReactChild;
+    buttonEvents$?: Observable<ButtonEventData>;
+}
+
+const highlight = true;
+
+export function Switch({children, buttonEvents$}: SwitchProps = {}) {
+
+    const [subscription, setter] = useState<Subscription | null>(null);
+    const [buttonEvents, setEventData] = useState<ButtonEventData>();
+
+    useEffect(() => {
+            if (subscription) {
+                console.log('Resubscribing to controller event data');
+                subscription.unsubscribe();
+            }
+            if (buttonEvents$) {
+                const newSubscription = buttonEvents$.subscribe(setEventData);
+                setter(newSubscription)
+            }
+        }, [buttonEvents$]
+    );
+
     return (
         <svg
             xmlns='http://www.w3.org/2000/svg'
@@ -12,6 +37,7 @@ export function Switch() {
                     <g fillRule='nonzero' stroke='#000'>
                         <path
                             fill='#44484C'
+                            stroke={highlight ? '#0F0' : '#000'}
                             d='M113.47 6.844V2.656C113.47 1.4 112.186 0 110.814 0h-26.25C44.07 0 7.824 32.662 1.612 55.844c-.283 1.058-.385 3.182 1.459 3.182h4.662L113.47 6.844z'
                         />
                         <path
@@ -22,6 +48,7 @@ export function Switch() {
                             fill='#44484C'
                             strokeLinecap='round'
                             strokeLinejoin='round'
+                            stroke={highlight ? '#0F0' : '#000'}
                             strokeWidth='1'
                             d='M87.355 200.042c0 8.367-6.783 15.15-15.15 15.15-8.368 0-15.15-6.783-15.15-15.15 0-8.368 6.782-15.15 15.15-15.15 8.367 0 15.15 6.782 15.15 15.15h0z'
                         />
@@ -29,6 +56,7 @@ export function Switch() {
                             fill='#44484C'
                             strokeLinecap='round'
                             strokeLinejoin='round'
+                            stroke={highlight ? '#0F0' : '#000'}
                             strokeWidth='1'
                             d='M87.355 262.671c0 8.367-6.783 15.15-15.15 15.15-8.368 0-15.15-6.783-15.15-15.15s6.782-15.15 15.15-15.15c8.367 0 15.15 6.783 15.15 15.15h0z'
                         />
@@ -36,6 +64,7 @@ export function Switch() {
                             fill='#44484C'
                             strokeLinecap='round'
                             strokeLinejoin='round'
+                            stroke={highlight ? '#0F0' : '#000'}
                             strokeWidth='1'
                             d='M40.89 246.507c-8.367 0-15.15-6.783-15.15-15.15 0-8.368 6.783-15.151 15.15-15.151s15.15 6.783 15.15 15.15c0 8.368-6.783 15.15-15.15 15.15h0z'
                         />
@@ -43,17 +72,20 @@ export function Switch() {
                             fill='#44484C'
                             strokeLinecap='round'
                             strokeLinejoin='round'
+                            stroke={highlight ? '#0F0' : '#000'}
                             strokeWidth='1'
                             d='M103.52 246.507c-8.368 0-15.151-6.783-15.151-15.15 0-8.368 6.783-15.151 15.15-15.151 8.368 0 15.15 6.783 15.15 15.15 0 8.368-6.782 15.15-15.15 15.15h0z'
                         />
                         <path
                             fill='#44484C'
+                            stroke={highlight ? '#0F0' : '#000'}
                             strokeLinecap='round'
                             strokeLinejoin='round'
                             d='M103.264 43.469H125.452V49.844H103.264z'
                         />
                         <path
                             fill='#44484C'
+                            stroke={highlight ? '#0F0' : '#000'}
                             strokeLinecap='round'
                             strokeLinejoin='round'
                             d='M104.389 113.469c0 17.707-14.355 32.062-32.063 32.062-17.707 0-32.062-14.355-32.062-32.062 0-17.708 14.355-32.063 32.062-32.063 17.708 0 32.063 14.355 32.063 32.063z'
@@ -95,6 +127,7 @@ export function Switch() {
                         />
                         <path
                             fill='#44484C'
+                            stroke={highlight ? '#0F0' : '#000'}
                             strokeLinecap='round'
                             strokeLinejoin='round'
                             d='M82.389 298.344H108.139V323.469H82.389z'
@@ -137,10 +170,10 @@ export function Switch() {
                             transform='scale(-1 1) rotate(90 0 192.062)'
                         />
                     </g>
-                    <g fillRule='nonzero' transform='translate(854.604)'>
+                    <g fillRule='nonzero' transform='translate(855.604)'>
                         <path
                             fill='#44484C'
-                            stroke='#000'
+                            stroke={highlight ? '#0F0' : '#000'}
                             d='M23 6.84V2.656C23 1.4 24.284 0 25.656 0h26.246c40.488 0 76.729 32.647 82.94 55.82.283 1.057.384 3.18-1.459 3.18h-4.662L23 6.84z'
                         />
                         <path
@@ -150,46 +183,51 @@ export function Switch() {
                         />
                         <path
                             fill='#44484C'
-                            stroke='#000'
+                            stroke={highlight ? '#0F0' : '#000'}
                             strokeLinecap='round'
                             strokeLinejoin='round'
                             d='M11 43.6326553L18.4645931 43.6326553 18.4645931 36 24.659233 36 24.659233 43.6647179 32 43.6647179 32 50.0787203 24.6902386 50.0787203 24.6902386 58 18.40268 58 18.40268 50.0787203 11.0309075 50.0787203z'
                         />
+                        {/*X Button*/}
                         <path
                             fill='#44484C'
-                            stroke='#000'
+                            stroke={highlight ? '#0F0' : '#000'}
                             strokeLinecap='round'
                             strokeLinejoin='round'
                             strokeWidth='1'
                             d='M79 79c0 8.284-6.716 15-15 15-8.284 0-15-6.716-15-15 0-8.284 6.716-15 15-15 8.284 0 15 6.716 15 15h0z'
                         />
+                        {/*B Button*/}
                         <path
                             fill='#44484C'
-                            stroke='#000'
+                            stroke={highlight ? '#0F0' : '#000'}
                             strokeLinecap='round'
                             strokeLinejoin='round'
                             strokeWidth='1'
                             d='M79 142c0 8.284-6.716 15-15 15-8.284 0-15-6.716-15-15 0-8.284 6.716-15 15-15 8.284 0 15 6.716 15 15h0z'
                         />
+                        {/*Y Button*/}
                         <path
                             fill='#44484C'
-                            stroke='#000'
+                            stroke={highlight ? '#0F0' : '#000'}
                             strokeLinecap='round'
                             strokeLinejoin='round'
                             strokeWidth='1'
                             d='M32 126c-8.284 0-15-6.716-15-15 0-8.284 6.716-15 15-15 8.284 0 15 6.716 15 15 0 8.284-6.716 15-15 15h0z'
                         />
+                        {/*A Button*/}
                         <path
                             fill='#44484C'
-                            stroke='#000'
+                            stroke={highlight ? '#0F0' : '#000'}
                             strokeLinecap='round'
                             strokeLinejoin='round'
                             strokeWidth='1'
                             d='M95 126c-8.284 0-15-6.716-15-15 0-8.284 6.716-15 15-15 8.284 0 15 6.716 15 15 0 8.284-6.716 15-15 15h0z'
                         />
+                        {/*HOME*/}
                         <path
                             fill='#999595'
-                            stroke='#000'
+                            stroke={highlight ? '#0F0' : '#000'}
                             strokeLinecap='round'
                             strokeLinejoin='round'
                             strokeWidth='1'
@@ -208,9 +246,10 @@ export function Switch() {
                             stroke='#000'
                             d='M32 304.183h2.545V312h12.91v-7.817H50c-2.804-2.545-6.577-6.02-9-8.183-2.933 2.632-6.024 5.471-9 8.183h0zm6 .13h6v4.994h-6v-4.993z'
                         />
+                        {/*Right stick*/}
                         <path
                             fill='#44484C'
-                            stroke='#000'
+                            stroke={highlight ? '#0F0' : '#000'}
                             strokeLinecap='round'
                             strokeLinejoin='round'
                             d='M96 227c0 17.673-14.327 32-32 32-17.673 0-32-14.327-32-32 0-17.673 14.327-32 32-32 17.673 0 32 14.327 32 32z'
@@ -275,7 +314,7 @@ export function Switch() {
                     <g
                         stroke='#373435'
                         strokeWidth='0.5'
-                        transform='translate(136.604 5.8)'
+                        transform='translate(137.204 5.8)'
                     >
                         <path
                             fill='#30363A'
@@ -285,7 +324,18 @@ export function Switch() {
                             fill='#373435'
                             d='M30.744 13.012h661.204c4.808 0 8.723 3.913 8.723 8.717v367.937c0 4.803-3.915 8.716-8.723 8.716H650.97v-3.72a4.11 4.11 0 00-4.11-4.105h-25.122a4.11 4.11 0 00-4.11 4.106v3.719H249.944v-9.414c0-3.099-3.257-5.655-7.328-5.655-4.032 0-7.288 2.556-7.288 5.655v9.414H105.064v-3.72a4.11 4.11 0 00-4.11-4.105H75.833a4.085 4.085 0 00-4.11 4.106v3.719H30.745c-4.807 0-8.723-3.913-8.723-8.716V21.729c0-4.804 3.916-8.717 8.723-8.717z'
                         />
-                        <path fill='#606062' d='M73.07 44.042H643.617V365.35H73.07z'/>
+                        {
+                            React.Children.count(children)
+                                ? (
+                                    <foreignObject x={73.07} y={44.042} width={643.617 - 73.07} height={365.35 - 44.042}>
+                                        {children}
+                                    </foreignObject>
+                                )
+                                : (
+                                    <rect fill='#606062' x={73.07} y={44.042} width={643.617 - 73.07}
+                                          height={365.35 - 44.042}/>
+                                )
+                        }
                     </g>
                 </g>
             </g>

@@ -120,8 +120,9 @@ function App() {
     }, [selectedPort]);
 
     useEffect(() => {
-        if (!compState)
-            setCompState([selectedPort, selectedSource].filter(s => !!s).length)
+        if (compState === HACK)
+            return;
+        setCompState([selectedPort, selectedSource].filter(s => !!s).length)
     }, [selectedPort, selectedSource]);
 
     switch (compState) {
@@ -153,12 +154,15 @@ function App() {
                                      src={source.appIcon.toDataURL()} onClick={() => selectSource(source)}/>
                             ))
                         }
+                        <video id='video-stream'
+                               style={{display: 'none'}}
+                               ref={video}/>
                     </header>
                 </div>
             );
         case HACK:
             return (
-                <div style={{position: 'absolute', top: '2.5%', left: '2.5%', bottom: '2.5%', right: '2.5%'}}>
+                <div style={{height: '100%'}}>
                     <Switch/>
                 </div>
             )
@@ -173,9 +177,11 @@ function App() {
                 }}>CLOSE
                 </button>
                 <button onClick={doOcrCheck}>Run OCR</button>
-                <video id='video-stream'
-                       style={{width: '100%', height: 'auto'}}
-                       ref={video}/>
+                <Switch>
+                    <video id='video-stream'
+                           style={{width: '100%', height: 'auto'}}
+                           ref={video}/>
+                </Switch>
             </header>
         </div>
     );
