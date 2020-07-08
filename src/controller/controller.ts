@@ -126,12 +126,16 @@ export class Controller {
     topLeft = Controller.repeatable((() => this.applyDPad(HAT.TOP_LEFT)));
     center = Controller.repeatable((() => this.applyDPad(HAT.CENTER)));
 
-    async leftStick(x: number, y: number, duration: number = 200) {
-            this.payload.leftStick[0] = x;
-            this.payload.leftStick[1] = y;
-            await this.sendPayload();
-            await asyncSleep(duration);
-            this.reset()
+    async leftStick(x: number, y: number) {
+        this.payload.leftStick[0] = x;
+        this.payload.leftStick[1] = y;
+        await this.sendPayload();
+    }
+
+    async rightStick(x: number, y: number) {
+        this.payload.rightStick[0] = x;
+        this.payload.rightStick[1] = y;
+        await this.sendPayload();
     }
 
     private async applyDPad(button: HAT) {
