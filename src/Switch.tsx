@@ -1,26 +1,92 @@
-import React, {useEffect, useState} from 'react';
+import React, {MutableRefObject, useEffect, useRef, useState} from 'react';
 import {Observable, Subscription} from 'rxjs';
 import {ButtonEventData} from './controller/controller';
+import {tap} from 'rxjs/operators';
 
 interface SwitchProps {
     children?: React.ReactChild;
     buttonEvents$?: Observable<ButtonEventData>;
 }
 
-const highlight = true;
+const black = '#000';
+const green = '#0F0';
 
 export function Switch({children, buttonEvents$}: SwitchProps = {}) {
 
     const [subscription, setter] = useState<Subscription | null>(null);
-    const [buttonEvents, setEventData] = useState<ButtonEventData>();
+    // const [buttonState.current?, setEventData] = useState<ButtonEventData | null>(null);
+    const buttonState = useRef<Partial<ButtonEventData>>({});
+    const previousButtonState = useRef<Partial<ButtonEventData>>({});
+    const animationId = useRef<number>();
+
+    const dpadUp = useRef<SVGPathElement>(null);
+    const dpadDown = useRef<SVGPathElement>(null);
+    const dpadLeft = useRef<SVGPathElement>(null);
+    const dpadRight = useRef<SVGPathElement>(null);
+    const minusButton = useRef<SVGPathElement>(null);
+    const lClickButton = useRef<SVGPathElement>(null);
+    const lBumper = useRef<SVGPathElement>(null);
+    const captureButton = useRef<SVGPathElement>(null);
+    const plusButton = useRef<SVGPathElement>(null);
+    const xButton = useRef<SVGPathElement>(null);
+    const bButton = useRef<SVGPathElement>(null);
+    const yButton = useRef<SVGPathElement>(null);
+    const aButton = useRef<SVGPathElement>(null);
+    const homeButton = useRef<SVGPathElement>(null);
+    const rClickButton = useRef<SVGPathElement>(null);
+    const rBumper = useRef<SVGPathElement>(null);
 
     useEffect(() => {
+        function updateStroke(el: MutableRefObject<SVGPathElement | null>, current: boolean | undefined, previous: boolean | undefined): void {
+            if (current !== previous)
+                el.current?.setAttribute('stroke', current ? green : black);
+        }
+
+        const update = () => {
+            const current: Partial<ButtonEventData> = buttonState.current;
+            const previous: Partial<ButtonEventData> = previousButtonState.current;
+
+            updateStroke(dpadRight, current.dpad?.right, previous.dpad?.right);
+            updateStroke(dpadLeft, current.dpad?.left, previous.dpad?.left);
+            updateStroke(dpadUp, current.dpad?.up, previous.dpad?.up);
+            updateStroke(dpadDown, current.dpad?.down, previous.dpad?.down);
+            updateStroke(minusButton, current.minus, previous.minus);
+            updateStroke(lClickButton, current.lClick, previous.lClick);
+            updateStroke(captureButton, current.capture, previous.capture);
+            updateStroke(plusButton, current.plus, previous.plus);
+            updateStroke(xButton, current.x, previous.x);
+            updateStroke(bButton, current.b, previous.b);
+            updateStroke(yButton, current.y, previous.y);
+            updateStroke(aButton, current.a, previous.a);
+            updateStroke(homeButton, current.home, previous.home);
+            updateStroke(rClickButton, current.rClick, previous.rClick);
+            updateStroke(rClickButton, current.rClick, previous.rClick);
+            updateStroke(rClickButton, current.rClick, previous.rClick);
+            updateStroke(lBumper, (current.l || current.zl), (previous.l || previous.zl));
+            updateStroke(rBumper, (current.r || current.zr), (previous.r || previous.zr));
+
+            previousButtonState.current = current;
+            animationId.current = requestAnimationFrame(update)
+        };
+
+        animationId.current = requestAnimationFrame(update);
+
+        return () => {
+            if (animationId.current)
+                cancelAnimationFrame(animationId.current)
+        }
+    }, []);
+    useEffect(() => {
             if (subscription) {
-                console.log('Resubscribing to controller event data');
+                console.log('unsubscribing from the old controller event data');
                 subscription.unsubscribe();
             }
             if (buttonEvents$) {
-                const newSubscription = buttonEvents$.subscribe(setEventData);
+                console.log('Subscribing to controller event data');
+                console.log('ref null:', !dpadLeft);
+                const newSubscription = buttonEvents$.pipe(tap(console.log)).subscribe((next) => {
+                    buttonState.current = next;
+                });
                 setter(newSubscription)
             }
         }, [buttonEvents$]
@@ -37,7 +103,8 @@ export function Switch({children, buttonEvents$}: SwitchProps = {}) {
                     <g fillRule='nonzero' stroke='#000'>
                         <path
                             fill='#44484C'
-                            stroke={highlight ? '#0F0' : '#000'}
+                            ref={lBumper}
+                            stroke={(buttonState.current?.l || buttonState.current?.zl) ? green : black}
                             d='M113.47 6.844V2.656C113.47 1.4 112.186 0 110.814 0h-26.25C44.07 0 7.824 32.662 1.612 55.844c-.283 1.058-.385 3.182 1.459 3.182h4.662L113.47 6.844z'
                         />
                         <path
@@ -48,7 +115,8 @@ export function Switch({children, buttonEvents$}: SwitchProps = {}) {
                             fill='#44484C'
                             strokeLinecap='round'
                             strokeLinejoin='round'
-                            stroke={highlight ? '#0F0' : '#000'}
+                            ref={dpadUp}
+                            stroke={buttonState.current?.dpad?.up ? green : black}
                             strokeWidth='1'
                             d='M87.355 200.042c0 8.367-6.783 15.15-15.15 15.15-8.368 0-15.15-6.783-15.15-15.15 0-8.368 6.782-15.15 15.15-15.15 8.367 0 15.15 6.782 15.15 15.15h0z'
                         />
@@ -56,7 +124,8 @@ export function Switch({children, buttonEvents$}: SwitchProps = {}) {
                             fill='#44484C'
                             strokeLinecap='round'
                             strokeLinejoin='round'
-                            stroke={highlight ? '#0F0' : '#000'}
+                            ref={dpadDown}
+                            stroke={buttonState.current?.dpad?.down ? green : black}
                             strokeWidth='1'
                             d='M87.355 262.671c0 8.367-6.783 15.15-15.15 15.15-8.368 0-15.15-6.783-15.15-15.15s6.782-15.15 15.15-15.15c8.367 0 15.15 6.783 15.15 15.15h0z'
                         />
@@ -64,7 +133,8 @@ export function Switch({children, buttonEvents$}: SwitchProps = {}) {
                             fill='#44484C'
                             strokeLinecap='round'
                             strokeLinejoin='round'
-                            stroke={highlight ? '#0F0' : '#000'}
+                            ref={dpadLeft}
+                            stroke={buttonState.current?.dpad?.left ? green : black}
                             strokeWidth='1'
                             d='M40.89 246.507c-8.367 0-15.15-6.783-15.15-15.15 0-8.368 6.783-15.151 15.15-15.151s15.15 6.783 15.15 15.15c0 8.368-6.783 15.15-15.15 15.15h0z'
                         />
@@ -72,20 +142,23 @@ export function Switch({children, buttonEvents$}: SwitchProps = {}) {
                             fill='#44484C'
                             strokeLinecap='round'
                             strokeLinejoin='round'
-                            stroke={highlight ? '#0F0' : '#000'}
+                            ref={dpadRight}
+                            stroke={buttonState.current?.dpad?.right ? green : black}
                             strokeWidth='1'
                             d='M103.52 246.507c-8.368 0-15.151-6.783-15.151-15.15 0-8.368 6.783-15.151 15.15-15.151 8.368 0 15.15 6.783 15.15 15.15 0 8.368-6.782 15.15-15.15 15.15h0z'
                         />
                         <path
                             fill='#44484C'
-                            stroke={highlight ? '#0F0' : '#000'}
+                            ref={minusButton}
+                            stroke={buttonState.current?.minus ? green : black}
                             strokeLinecap='round'
                             strokeLinejoin='round'
                             d='M103.264 43.469H125.452V49.844H103.264z'
                         />
                         <path
                             fill='#44484C'
-                            stroke={highlight ? '#0F0' : '#000'}
+                            ref={lClickButton}
+                            stroke={buttonState.current?.lClick ? green : black}
                             strokeLinecap='round'
                             strokeLinejoin='round'
                             d='M104.389 113.469c0 17.707-14.355 32.062-32.063 32.062-17.707 0-32.062-14.355-32.062-32.062 0-17.708 14.355-32.063 32.062-32.063 17.708 0 32.063 14.355 32.063 32.063z'
@@ -127,7 +200,8 @@ export function Switch({children, buttonEvents$}: SwitchProps = {}) {
                         />
                         <path
                             fill='#44484C'
-                            stroke={highlight ? '#0F0' : '#000'}
+                            ref={captureButton}
+                            stroke={buttonState.current?.capture ? green : black}
                             strokeLinecap='round'
                             strokeLinejoin='round'
                             d='M82.389 298.344H108.139V323.469H82.389z'
@@ -173,7 +247,8 @@ export function Switch({children, buttonEvents$}: SwitchProps = {}) {
                     <g fillRule='nonzero' transform='translate(855.604)'>
                         <path
                             fill='#44484C'
-                            stroke={highlight ? '#0F0' : '#000'}
+                            ref={rBumper}
+                            stroke={(buttonState.current?.r || buttonState.current?.zr) ? green : black}
                             d='M23 6.84V2.656C23 1.4 24.284 0 25.656 0h26.246c40.488 0 76.729 32.647 82.94 55.82.283 1.057.384 3.18-1.459 3.18h-4.662L23 6.84z'
                         />
                         <path
@@ -183,7 +258,8 @@ export function Switch({children, buttonEvents$}: SwitchProps = {}) {
                         />
                         <path
                             fill='#44484C'
-                            stroke={highlight ? '#0F0' : '#000'}
+                            ref={plusButton}
+                            stroke={buttonState.current?.plus ? green : black}
                             strokeLinecap='round'
                             strokeLinejoin='round'
                             d='M11 43.6326553L18.4645931 43.6326553 18.4645931 36 24.659233 36 24.659233 43.6647179 32 43.6647179 32 50.0787203 24.6902386 50.0787203 24.6902386 58 18.40268 58 18.40268 50.0787203 11.0309075 50.0787203z'
@@ -191,7 +267,8 @@ export function Switch({children, buttonEvents$}: SwitchProps = {}) {
                         {/*X Button*/}
                         <path
                             fill='#44484C'
-                            stroke={highlight ? '#0F0' : '#000'}
+                            ref={xButton}
+                            stroke={buttonState.current?.x ? green : black}
                             strokeLinecap='round'
                             strokeLinejoin='round'
                             strokeWidth='1'
@@ -200,7 +277,8 @@ export function Switch({children, buttonEvents$}: SwitchProps = {}) {
                         {/*B Button*/}
                         <path
                             fill='#44484C'
-                            stroke={highlight ? '#0F0' : '#000'}
+                            ref={bButton}
+                            stroke={buttonState.current?.b ? green : black}
                             strokeLinecap='round'
                             strokeLinejoin='round'
                             strokeWidth='1'
@@ -209,7 +287,8 @@ export function Switch({children, buttonEvents$}: SwitchProps = {}) {
                         {/*Y Button*/}
                         <path
                             fill='#44484C'
-                            stroke={highlight ? '#0F0' : '#000'}
+                            ref={yButton}
+                            stroke={buttonState.current?.y ? green : black}
                             strokeLinecap='round'
                             strokeLinejoin='round'
                             strokeWidth='1'
@@ -218,7 +297,8 @@ export function Switch({children, buttonEvents$}: SwitchProps = {}) {
                         {/*A Button*/}
                         <path
                             fill='#44484C'
-                            stroke={highlight ? '#0F0' : '#000'}
+                            ref={aButton}
+                            stroke={buttonState.current?.a ? green : black}
                             strokeLinecap='round'
                             strokeLinejoin='round'
                             strokeWidth='1'
@@ -227,7 +307,8 @@ export function Switch({children, buttonEvents$}: SwitchProps = {}) {
                         {/*HOME*/}
                         <path
                             fill='#999595'
-                            stroke={highlight ? '#0F0' : '#000'}
+                            ref={homeButton}
+                            stroke={buttonState.current?.home ? green : black}
                             strokeLinecap='round'
                             strokeLinejoin='round'
                             strokeWidth='1'
@@ -249,7 +330,8 @@ export function Switch({children, buttonEvents$}: SwitchProps = {}) {
                         {/*Right stick*/}
                         <path
                             fill='#44484C'
-                            stroke={highlight ? '#0F0' : '#000'}
+                            ref={rClickButton}
+                            stroke={buttonState.current?.rClick ? green : black}
                             strokeLinecap='round'
                             strokeLinejoin='round'
                             d='M96 227c0 17.673-14.327 32-32 32-17.673 0-32-14.327-32-32 0-17.673 14.327-32 32-32 17.673 0 32 14.327 32 32z'

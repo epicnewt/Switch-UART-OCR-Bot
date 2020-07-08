@@ -6,6 +6,20 @@ import {map, share} from 'rxjs/operators';
 
 const SerialPort = Electron.remote.require('serialport');
 
+async function asyncSleep(milliseconds: number) {
+    const end = performance.now() + milliseconds;
+    return new Promise<void>(resolve => {
+        function check(now: number) {
+            if (now <= end) {
+                requestAnimationFrame(check);
+            }
+            resolve();
+        }
+
+        requestAnimationFrame(check)
+    })
+}
+
 export interface ButtonEventData {
     leftStick: [number, number];
     rightStick: [number, number];
@@ -23,8 +37,9 @@ export interface ButtonEventData {
     rClick: boolean;
     home: boolean;
     capture: boolean;
-    dpad: HAT
+    dpad: Record<'up' | 'down' | 'right' | 'left', boolean>
 }
+
 
 export class Controller {
     public events$: Observable<ButtonEventData>;
@@ -40,7 +55,12 @@ export class Controller {
             map(data => ({
                 leftStick: data.leftStick,
                 rightStick: data.rightStick,
-                dpad: data.hat,
+                dpad: {
+                    up: [HAT.TOP, HAT.TOP_LEFT, HAT.TOP_RIGHT].includes(data.hat),
+                    left: [HAT.LEFT, HAT.TOP_LEFT, HAT.BOTTOM_LEFT].includes(data.hat),
+                    right: [HAT.RIGHT, HAT.TOP_RIGHT, HAT.BOTTOM_RIGHT].includes(data.hat),
+                    down: [HAT.BOTTOM, HAT.BOTTOM_RIGHT, HAT.BOTTOM_LEFT].includes(data.hat)
+                },
                 a: !!(data.buttons & Buttons.A),
                 b: !!(data.buttons & Buttons.B),
                 x: !!(data.buttons & Buttons.X),
@@ -59,21 +79,15 @@ export class Controller {
             share()
         )
     }
-
-    private async sendPayloadAndReset(timeout = 500/15) {
-        async function sleep(milliseconds: number) {
-            const end = new Date().getTime() + milliseconds;
-            while (new Date().getTime() <= end);
-        }
-
-        const reset = () => {
-            this.payload.reset();
-            this.sendPayload();
-        };
-
+    reset() {
+        this.payload.reset();
         this.sendPayload();
-        await sleep(timeout);
-        reset();
+    };
+
+    private async sendPayloadAndReset(timeout = 200) {
+        this.sendPayload();
+        await asyncSleep(timeout);
+        this.reset();
     }
 
     private sendPayload() {
@@ -88,44 +102,51 @@ export class Controller {
         });
     }
 
-    async a() {
-        await this.pressButton(Buttons.A);
+    home = Controller.repeatable((() => this.pressButton(Buttons.HOME)));
+    capture = Controller.repeatable((() => this.pressButton(Buttons.CAPTURE)));
+    a = Controller.repeatable((() => this.pressButton(Buttons.A)));
+    b = Controller.repeatable((() => this.pressButton(Buttons.B)));
+    x = Controller.repeatable((() => this.pressButton(Buttons.X)));
+    y = Controller.repeatable((() => this.pressButton(Buttons.Y)));
+    plus = Controller.repeatable((() => this.pressButton(Buttons.PLUS)));
+    minus = Controller.repeatable((() => this.pressButton(Buttons.MINUS)));
+    rClick = Controller.repeatable((() => this.pressButton(Buttons.RCLICK)));
+    r = Controller.repeatable((() => this.pressButton(Buttons.R)));
+    zr = Controller.repeatable((() => this.pressButton(Buttons.ZR)));
+    lClick = Controller.repeatable((() => this.pressButton(Buttons.LCLICK)));
+    l = Controller.repeatable((() => this.pressButton(Buttons.L)));
+    zl = Controller.repeatable((() => this.pressButton(Buttons.ZL)));
+    top = Controller.repeatable((() => this.applyDPad(HAT.TOP)));
+    topRight = Controller.repeatable((() => this.applyDPad(HAT.TOP_RIGHT)));
+    right = Controller.repeatable((() => this.applyDPad(HAT.RIGHT)));
+    bottomRight = Controller.repeatable((() => this.applyDPad(HAT.BOTTOM_RIGHT)));
+    bottom = Controller.repeatable((() => this.applyDPad(HAT.BOTTOM)));
+    bottomLeft = Controller.repeatable((() => this.applyDPad(HAT.BOTTOM_LEFT)));
+    left = Controller.repeatable((() => this.applyDPad(HAT.LEFT)));
+    topLeft = Controller.repeatable((() => this.applyDPad(HAT.TOP_LEFT)));
+    center = Controller.repeatable((() => this.applyDPad(HAT.CENTER)));
+
+    async leftStick(x: number, y: number, duration: number = 200) {
+            this.payload.leftStick[0] = x;
+            this.payload.leftStick[1] = y;
+            await this.sendPayload();
+            await asyncSleep(duration);
+            this.reset()
     }
 
-    async b() {
-        await this.pressButton(Buttons.B);
+    private async applyDPad(button: HAT) {
+        this.payload.hat = button;
+        await this.sendPayloadAndReset()
     }
 
-    async x() {
-        await this.pressButton(Buttons.X);
-    }
-
-    async y() {
-        await this.pressButton(Buttons.Y);
-    }
-
-    async plus() {
-        await this.pressButton(Buttons.PLUS);
-    }
-
-    async minus() {
-        await this.pressButton(Buttons.MINUS);
-    }
-
-    async r() {
-        await this.pressButton(Buttons.R);
-    }
-
-    async zr() {
-        await this.pressButton(Buttons.ZR);
-    }
-
-    async l() {
-        await this.pressButton(Buttons.L);
-    }
-
-    async zl() {
-        await this.pressButton(Buttons.ZL);
+    private static repeatable(action: () => Promise<any>): (times?: number) => Promise<any> {
+        return async function repeat(times = 1) {
+            await action();
+            for (let i = 1; i < times; i++) {
+                await asyncSleep(4 / 60);
+                await action();
+            }
+        };
     }
 
     async pressButton(...buttons: Buttons[]) {

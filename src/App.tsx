@@ -33,7 +33,7 @@ function App() {
     const [sources, setSources] = useState<Electron.DesktopCapturerSource[]>([]);
     const [controller, setController] = useState<Controller>();
     const [buttonData, setButtonData] = useState<ButtonEventData>();
-    const [compState, setCompState] = useState(HACK);
+    const [compState, setCompState] = useState(0);
     const [intervalID, setIntervalID] = useState<NodeJS.Timeout>();
 
     const [videoEl, setVideoEl] = useState<HTMLVideoElement>();
@@ -56,7 +56,7 @@ function App() {
 
     useEffect(() => {
         if (controller) {
-            controller.events$.pipe(tap(console.log)).subscribe(setButtonData)
+            controller.events$.subscribe(setButtonData)
         }
     }, [controller]);
 
@@ -73,11 +73,7 @@ function App() {
     }, []);
 
     useEffect(() => {
-        console.log(JSON.stringify({source: !!selectSource, video: !!videoEl}));
-
         async function startStream() {
-            console.log(JSON.stringify({source: !!selectSource, video: !!videoEl}));
-
             if (videoEl && selectedSource) {
                 videoEl.onloadedmetadata = () => {
                     videoEl.play()
@@ -162,7 +158,7 @@ function App() {
             );
         case HACK:
             return (
-                <div style={{height: '100%'}}>
+                <div style={{height: '100%', maxWidth: '100%'}}>
                     <Switch/>
                 </div>
             )
@@ -177,7 +173,7 @@ function App() {
                 }}>CLOSE
                 </button>
                 <button onClick={doOcrCheck}>Run OCR</button>
-                <Switch>
+                <Switch buttonEvents$={controller?.events$}>
                     <video id='video-stream'
                            style={{width: '100%', height: 'auto'}}
                            ref={video}/>
