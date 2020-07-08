@@ -2,6 +2,8 @@ import React, {MutableRefObject, useEffect, useRef, useState} from 'react';
 import {Observable, Subscription} from 'rxjs';
 import {ButtonEventData} from './controller/controller';
 import {tap} from 'rxjs/operators';
+import {isEqual} from 'lodash-es';
+import {Stick} from './controller/buttons.model';
 
 interface SwitchProps {
     children?: React.ReactChild;
@@ -42,6 +44,10 @@ export function Switch({children, buttonEvents$}: SwitchProps = {}) {
                 el.current?.setAttribute('stroke', current ? green : black);
         }
 
+        function coord(n: number) {
+            return (n - Stick.MID) / (Stick.MAX / 25)
+        }
+
         const update = () => {
             const current: Partial<ButtonEventData> = buttonState.current;
             const previous: Partial<ButtonEventData> = previousButtonState.current;
@@ -64,6 +70,11 @@ export function Switch({children, buttonEvents$}: SwitchProps = {}) {
             updateStroke(rClickButton, current.rClick, previous.rClick);
             updateStroke(lBumper, (current.l || current.zl), (previous.l || previous.zl));
             updateStroke(rBumper, (current.r || current.zr), (previous.r || previous.zr));
+
+            if (current.leftStick && isEqual(current.leftStick, previous.leftStick))
+                lClickButton.current?.parentElement?.setAttribute('transform', `translate(${coord(current.leftStick[0])}, ${coord(current.leftStick[1])})`);
+            if (current.rightStick && isEqual(current.rightStick, previous.rightStick))
+                rClickButton.current?.parentElement?.setAttribute('transform', `translate(${coord(current.rightStick[0])}, ${coord(current.rightStick[1])})`);
 
             previousButtonState.current = current;
             animationId.current = requestAnimationFrame(update)
@@ -95,7 +106,7 @@ export function Switch({children, buttonEvents$}: SwitchProps = {}) {
     return (
         <svg
             xmlns='http://www.w3.org/2000/svg'
-            height='100%'
+            width='100%'
             viewBox='0 0 994 425'
         >
             <g fill='none' fillRule='evenodd' stroke='none' strokeWidth='1'>
@@ -155,49 +166,51 @@ export function Switch({children, buttonEvents$}: SwitchProps = {}) {
                             strokeLinejoin='round'
                             d='M103.264 43.469H125.452V49.844H103.264z'
                         />
-                        <path
-                            fill='#44484C'
-                            ref={lClickButton}
-                            stroke={buttonState.current?.lClick ? green : black}
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                            d='M104.389 113.469c0 17.707-14.355 32.062-32.063 32.062-17.707 0-32.062-14.355-32.062-32.062 0-17.708 14.355-32.063 32.062-32.063 17.708 0 32.063 14.355 32.063 32.063z'
-                        />
-                        <path
-                            fill='#44484C'
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                            strokeWidth='1'
-                            d='M94.81 113.691c0 12.418-10.066 22.484-22.484 22.484-12.417 0-22.484-10.066-22.484-22.484 0-12.418 10.067-22.484 22.484-22.484 12.418 0 22.484 10.066 22.484 22.484z'
-                        />
-                        <path
-                            fill='#000'
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                            strokeWidth='0.031'
-                            d='M71.165 87.355c0-2.145.006-3.412.015-3.48.03-.207.132-.405.29-.562a.982.982 0 011.576.275c.11.228.102-.049.102 3.717v3.402h-.7c-.387 0-.833.004-.993.01l-.29.011v-3.373h0z'
-                        />
-                        <path
-                            fill='#000'
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                            strokeWidth='0.031'
-                            d='M72.045 143.776c-.39-.044-.725-.333-.847-.732-.025-.08-.027-.33-.031-3.24l-.005-3.153.23.013c.127.007.574.013.993.013h.762l-.004 3.156-.004 3.156-.035.102a1.037 1.037 0 01-.651.647c-.1.034-.29.051-.408.038h0z'
-                        />
-                        <path
-                            fill='#000'
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                            strokeWidth='0.031'
-                            d='M95.311 113.76c0-.356-.006-.802-.013-.994l-.012-.348 3.231.004 3.231.004.115.042c.431.158.7.555.67.994a.974.974 0 01-.28.631c-.134.136-.259.208-.489.282-.05.016-.711.02-3.258.024l-3.195.005v-.645h0z'
-                        />
-                        <path
-                            fill='#000'
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                            strokeWidth='0.031'
-                            d='M42.64 114.387a.988.988 0 01-.579-.299.985.985 0 01.492-1.647c.07-.017.69-.021 3.45-.022h3.364l-.012.332c-.007.183-.013.629-.013.992v.66l-3.304-.002a253.448 253.448 0 01-3.399-.014h0z'
-                        />
+                        <g>
+                            <path
+                                fill='#44484C'
+                                ref={lClickButton}
+                                stroke={buttonState.current?.lClick ? green : black}
+                                strokeLinecap='round'
+                                strokeLinejoin='round'
+                                d='M104.389 113.469c0 17.707-14.355 32.062-32.063 32.062-17.707 0-32.062-14.355-32.062-32.062 0-17.708 14.355-32.063 32.062-32.063 17.708 0 32.063 14.355 32.063 32.063z'
+                            />
+                            <path
+                                fill='#44484C'
+                                strokeLinecap='round'
+                                strokeLinejoin='round'
+                                strokeWidth='1'
+                                d='M94.81 113.691c0 12.418-10.066 22.484-22.484 22.484-12.417 0-22.484-10.066-22.484-22.484 0-12.418 10.067-22.484 22.484-22.484 12.418 0 22.484 10.066 22.484 22.484z'
+                            />
+                            <path
+                                fill='#000'
+                                strokeLinecap='round'
+                                strokeLinejoin='round'
+                                strokeWidth='0.031'
+                                d='M71.165 87.355c0-2.145.006-3.412.015-3.48.03-.207.132-.405.29-.562a.982.982 0 011.576.275c.11.228.102-.049.102 3.717v3.402h-.7c-.387 0-.833.004-.993.01l-.29.011v-3.373h0z'
+                            />
+                            <path
+                                fill='#000'
+                                strokeLinecap='round'
+                                strokeLinejoin='round'
+                                strokeWidth='0.031'
+                                d='M72.045 143.776c-.39-.044-.725-.333-.847-.732-.025-.08-.027-.33-.031-3.24l-.005-3.153.23.013c.127.007.574.013.993.013h.762l-.004 3.156-.004 3.156-.035.102a1.037 1.037 0 01-.651.647c-.1.034-.29.051-.408.038h0z'
+                            />
+                            <path
+                                fill='#000'
+                                strokeLinecap='round'
+                                strokeLinejoin='round'
+                                strokeWidth='0.031'
+                                d='M95.311 113.76c0-.356-.006-.802-.013-.994l-.012-.348 3.231.004 3.231.004.115.042c.431.158.7.555.67.994a.974.974 0 01-.28.631c-.134.136-.259.208-.489.282-.05.016-.711.02-3.258.024l-3.195.005v-.645h0z'
+                            />
+                            <path
+                                fill='#000'
+                                strokeLinecap='round'
+                                strokeLinejoin='round'
+                                strokeWidth='0.031'
+                                d='M42.64 114.387a.988.988 0 01-.579-.299.985.985 0 01.492-1.647c.07-.017.69-.021 3.45-.022h3.364l-.012.332c-.007.183-.013.629-.013.992v.66l-3.304-.002a253.448 253.448 0 01-3.399-.014h0z'
+                            />
+                        </g>
                         <path
                             fill='#44484C'
                             ref={captureButton}
@@ -328,54 +341,56 @@ export function Switch({children, buttonEvents$}: SwitchProps = {}) {
                             d='M32 304.183h2.545V312h12.91v-7.817H50c-2.804-2.545-6.577-6.02-9-8.183-2.933 2.632-6.024 5.471-9 8.183h0zm6 .13h6v4.994h-6v-4.993z'
                         />
                         {/*Right stick*/}
-                        <path
-                            fill='#44484C'
-                            ref={rClickButton}
-                            stroke={buttonState.current?.rClick ? green : black}
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                            d='M96 227c0 17.673-14.327 32-32 32-17.673 0-32-14.327-32-32 0-17.673 14.327-32 32-32 17.673 0 32 14.327 32 32z'
-                        />
-                        <path
-                            fill='#44484C'
-                            stroke='#000'
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                            strokeWidth='1'
-                            d='M86 226.5c0 12.426-10.074 22.5-22.5 22.5S41 238.926 41 226.5 51.074 204 63.5 204 86 214.074 86 226.5z'
-                        />
-                        <path
-                            fill='#000'
-                            stroke='#000'
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                            strokeWidth='0.031'
-                            d='M63 200.495c0-2.229.01-3.545.016-3.616.03-.215.133-.42.292-.584a.975.975 0 011.588.286c.111.237.103-.05.104 3.863v3.534h-.707c-.389-.001-.839.004-1 .01L63 204v-3.505h0z'
-                        />
-                        <path
-                            fill='#000'
-                            stroke='#000'
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                            strokeWidth='0.031'
-                            d='M63.895 256.996a1.026 1.026 0 01-.854-.72c-.024-.077-.027-.323-.03-3.18L63 250l.232.012c.128.007.578.013 1 .013H65v6.198l-.035.1c-.105.3-.348.535-.656.636-.101.032-.292.05-.411.037h0-.003z'
-                        />
-                        <path
-                            fill='#000'
-                            stroke='#000'
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                            strokeWidth='0.031'
-                            d='M87.025 227.35c0-.357-.01-.807-.012-1L87 226l3.12.004 3.12.004.111.042a.997.997 0 01.647 1.001 1 1 0 01-.271.636c-.129.136-.25.209-.472.283-.048.016-.687.021-3.145.025l-3.085.005v-.65h0z'
-                        />
-                        <path
-                            fill='#000'
-                            stroke='#000'
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                            strokeWidth='0.031'
-                            d='M33.904 227.983a1.059 1.059 0 01-.61-.3c-.562-.568-.279-1.475.519-1.66.075-.018.727-.022 3.639-.022L41 226l-.013.335c-.01.184-.012.634-.012 1V228l-3.486-.002a279.78 279.78 0 01-3.585-.015h0z'
-                        />
+                        <g>
+                            <path
+                                fill='#44484C'
+                                ref={rClickButton}
+                                stroke={buttonState.current?.rClick ? green : black}
+                                strokeLinecap='round'
+                                strokeLinejoin='round'
+                                d='M96 227c0 17.673-14.327 32-32 32-17.673 0-32-14.327-32-32 0-17.673 14.327-32 32-32 17.673 0 32 14.327 32 32z'
+                            />
+                            <path
+                                fill='#44484C'
+                                stroke='#000'
+                                strokeLinecap='round'
+                                strokeLinejoin='round'
+                                strokeWidth='1'
+                                d='M86 226.5c0 12.426-10.074 22.5-22.5 22.5S41 238.926 41 226.5 51.074 204 63.5 204 86 214.074 86 226.5z'
+                            />
+                            <path
+                                fill='#000'
+                                stroke='#000'
+                                strokeLinecap='round'
+                                strokeLinejoin='round'
+                                strokeWidth='0.031'
+                                d='M63 200.495c0-2.229.01-3.545.016-3.616.03-.215.133-.42.292-.584a.975.975 0 011.588.286c.111.237.103-.05.104 3.863v3.534h-.707c-.389-.001-.839.004-1 .01L63 204v-3.505h0z'
+                            />
+                            <path
+                                fill='#000'
+                                stroke='#000'
+                                strokeLinecap='round'
+                                strokeLinejoin='round'
+                                strokeWidth='0.031'
+                                d='M63.895 256.996a1.026 1.026 0 01-.854-.72c-.024-.077-.027-.323-.03-3.18L63 250l.232.012c.128.007.578.013 1 .013H65v6.198l-.035.1c-.105.3-.348.535-.656.636-.101.032-.292.05-.411.037h0-.003z'
+                            />
+                            <path
+                                fill='#000'
+                                stroke='#000'
+                                strokeLinecap='round'
+                                strokeLinejoin='round'
+                                strokeWidth='0.031'
+                                d='M87.025 227.35c0-.357-.01-.807-.012-1L87 226l3.12.004 3.12.004.111.042a.997.997 0 01.647 1.001 1 1 0 01-.271.636c-.129.136-.25.209-.472.283-.048.016-.687.021-3.145.025l-3.085.005v-.65h0z'
+                            />
+                            <path
+                                fill='#000'
+                                stroke='#000'
+                                strokeLinecap='round'
+                                strokeLinejoin='round'
+                                strokeWidth='0.031'
+                                d='M33.904 227.983a1.059 1.059 0 01-.61-.3c-.562-.568-.279-1.475.519-1.66.075-.018.727-.022 3.639-.022L41 226l-.013.335c-.01.184-.012.634-.012 1V228l-3.486-.002a279.78 279.78 0 01-3.585-.015h0z'
+                            />
+                        </g>
                         <path
                             fill='#FFF'
                             d='M56 86.98c0-.01 1.244-1.888 2.765-4.174l2.764-4.159-2.45-3.727c-1.347-2.05-2.48-3.772-2.519-3.824L56.492 71h3.791l1.626 2.568c.894 1.412 1.641 2.562 1.66 2.556.02-.011.747-1.158 1.617-2.559l1.582-2.548 1.868-.01c1.027-.011 1.868 0 1.868.01 0 .011-1.127 1.75-2.503 3.867-1.432 2.203-2.496 3.873-2.487 3.905.01.03 1.246 1.881 2.75 4.112A539.281 539.281 0 0171 86.978c0 .011-.874.02-1.941.02h-1.942l-1.805-2.779c-1.457-2.244-1.813-2.77-1.848-2.732-.024.025-.845 1.276-1.825 2.78L59.858 87h-1.93c-1.06 0-1.928-.011-1.928-.017v-.002z'

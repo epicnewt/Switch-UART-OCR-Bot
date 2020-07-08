@@ -175,7 +175,7 @@ function App() {
                 <button onClick={doOcrCheck}>Run OCR</button>
                 <Switch buttonEvents$={controller?.events$}>
                     <video id='video-stream'
-                           style={{width: '100%', height: 'auto'}}
+                           style={{width: '100%', height: 'auto', position: 'relative', top: '50%', transform: 'translateY(-50%)'}}
                            ref={video}/>
                 </Switch>
             </header>
