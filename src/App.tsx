@@ -4,7 +4,7 @@ import Tesseract from 'tesseract.js';
 import ISerialPort from 'serialport';
 import {ButtonEventData, Controller} from './controller/controller';
 import {Switch} from './Switch';
-import {recognise} from './ocr-pipeline';
+import {recognise} from './video-stream/ocr-pipeline';
 
 const {desktopCapturer} = Electron;
 

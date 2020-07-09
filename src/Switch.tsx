@@ -4,7 +4,8 @@ import {ButtonEventData} from './controller/controller';
 import {tap} from 'rxjs/operators';
 import {isEqual} from 'lodash-es';
 import {Stick} from './controller/buttons.model';
-import {recognise} from './ocr-pipeline';
+import {imageData, recognise} from './video-stream/ocr-pipeline';
+import {ColourMatcher} from './video-stream/ColourMatcher';
 
 interface SwitchProps {
     children?: React.ReactChild;
@@ -452,7 +453,7 @@ export function Switch({children, buttonEvents$}: SwitchProps = {}) {
                                                         ];
                                                         console.log(`[${left}/${width}, ${top}/${height}, ${right - left}/${width}, ${bottom - top}/${height}]`, rectangle);
                                                         if (rectangle[2] && rectangle[3])
-                                                            recognise(rectangle).then(console.log);
+                                                            recognise(rectangle).then(d => console.log(d, ColourMatcher.closestMatch(imageData([left / width, top / height, 1, 1])?.data.slice(0, 3))))
                                                         vidCoord.current = null
                                                     }
 

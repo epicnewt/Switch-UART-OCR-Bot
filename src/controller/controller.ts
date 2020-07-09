@@ -12,8 +12,9 @@ async function asyncSleep(milliseconds: number) {
         function check(now: number) {
             if (now <= end) {
                 requestAnimationFrame(check);
+            } else {
+                resolve();
             }
-            resolve();
         }
 
         requestAnimationFrame(check)
@@ -84,7 +85,7 @@ export class Controller {
         this.sendPayload();
     };
 
-    private async sendPayloadAndReset(timeout = 200) {
+    private async sendPayloadAndReset(timeout = 250) {
         this.sendPayload();
         await asyncSleep(timeout);
         this.reset();
@@ -94,6 +95,7 @@ export class Controller {
         this.eventEmitter.next(this.payload);
         this.port.write(this.payload.asBytes());
         this.port.flush();
+        this.port.read();
     }
 
     close() {
