@@ -1,10 +1,10 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import './App.css';
 import Tesseract from 'tesseract.js';
 import ISerialPort from 'serialport';
 import {ButtonEventData, Controller} from './controller/controller';
-import {tap} from 'rxjs/operators';
 import {Switch} from './Switch';
+import {recognise} from './ocr-pipeline';
 
 const {desktopCapturer} = Electron;
 
@@ -35,6 +35,7 @@ function App() {
     const [buttonData, setButtonData] = useState<ButtonEventData>();
     const [compState, setCompState] = useState(0);
     const [intervalID, setIntervalID] = useState<NodeJS.Timeout>();
+    const vidCoord: React.MutableRefObject<[number, number] | null> = useRef<[number, number]>(null);
 
     const [videoEl, setVideoEl] = useState<HTMLVideoElement>();
     const video = useCallback((node) => {
@@ -49,7 +50,9 @@ function App() {
         if (!videoEl)
             return;
 
-        Tesseract.recognize(videoEl, 'eng')
+        Tesseract.recognize(videoEl, {
+            langs: 'eng'
+        })
             .catch((err: any) => console.error('Tesseract.recognize(videoEl.current)', err))
             .then((result) => console.log('Tesseract.recognize(videoEl.current)', result));
     }
@@ -173,9 +176,17 @@ function App() {
                 }}>CLOSE
                 </button>
                 <button onClick={doOcrCheck}>Run OCR</button>
+                <img id='debug' />
                 <Switch buttonEvents$={controller?.events$}>
                     <video id='video-stream'
-                           style={{width: '100%', height: 'auto', position: 'relative', top: '50%', transform: 'translateY(-50%)'}}
+                           style={{
+                               width: '100%',
+                               height: 'auto',
+                               position: 'absolute',
+                               top: '50%',
+                               left: 0,
+                               transform: 'translateY(-50%)'
+                           }}
                            ref={video}/>
                 </Switch>
             </header>

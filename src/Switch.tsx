@@ -4,6 +4,7 @@ import {ButtonEventData} from './controller/controller';
 import {tap} from 'rxjs/operators';
 import {isEqual} from 'lodash-es';
 import {Stick} from './controller/buttons.model';
+import {recognise} from './ocr-pipeline';
 
 interface SwitchProps {
     children?: React.ReactChild;
@@ -37,6 +38,7 @@ export function Switch({children, buttonEvents$}: SwitchProps = {}) {
     const homeButton = useRef<SVGPathElement>(null);
     const rClickButton = useRef<SVGPathElement>(null);
     const rBumper = useRef<SVGPathElement>(null);
+    const vidCoord = useRef<[number, number] | null>(null);
 
     useEffect(() => {
         function updateStroke(el: MutableRefObject<SVGPathElement | null>, current: boolean | undefined, previous: boolean | undefined): void {
@@ -424,8 +426,37 @@ export function Switch({children, buttonEvents$}: SwitchProps = {}) {
                         {
                             React.Children.count(children)
                                 ? (
-                                    <foreignObject x={73.07} y={44.042} width={643.617 - 73.07} height={365.35 - 44.042}>
+                                    <foreignObject key={1} x={73.07} y={44.042} width={643.617 - 73.07}
+                                                   height={365.35 - 44.042}>
                                         {children}
+                                        <canvas key={0}
+                                                style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%'}}
+
+                                                onClick={((event) => {
+                                                    const rect = event.currentTarget.getBoundingClientRect();
+                                                    const [right, bottom] = [Math.floor(event.clientX - rect.left), Math.floor(event.clientY - rect.top)];
+                                                    if (!vidCoord.current) {
+                                                        vidCoord.current = [right, bottom];
+                                                        console.log('First position:', vidCoord.current.join(','))
+                                                    } else {
+                                                        const [left, top] = vidCoord.current;
+                                                        const [width, height] = [
+                                                            Math.floor(rect.width),
+                                                            Math.floor(rect.height)
+                                                        ];
+                                                        const rectangle: [number, number, number, number] = [
+                                                            left / width,
+                                                            (top) / height,
+                                                            (right - left) / width,
+                                                            (bottom - top) / height
+                                                        ];
+                                                        console.log(`[${left}/${width}, ${top}/${height}, ${right - left}/${width}, ${bottom - top}/${height}]`, rectangle);
+                                                        if (rectangle[2] && rectangle[3])
+                                                            recognise(rectangle).then(console.log);
+                                                        vidCoord.current = null
+                                                    }
+
+                                                })}/>
                                     </foreignObject>
                                 )
                                 : (
