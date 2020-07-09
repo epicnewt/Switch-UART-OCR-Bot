@@ -4,6 +4,8 @@ import ISerialPort from 'serialport';
 import {Observable, Subject} from 'rxjs';
 import {map, share} from 'rxjs/operators';
 
+
+// @ts-ignore
 const SerialPort = Electron.remote.require('serialport');
 
 async function asyncSleep(milliseconds: number) {

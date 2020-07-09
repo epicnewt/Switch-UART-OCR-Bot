@@ -10,6 +10,7 @@
     },
     "no-console": false,
     "jsx-no-lambda": false,
-    "no-bitwise": false
+    "no-bitwise": false,
+    "no-var-requires": false
   }
 }

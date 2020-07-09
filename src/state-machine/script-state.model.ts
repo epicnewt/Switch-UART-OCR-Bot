@@ -1,13 +1,12 @@
 
-export interface DraftScriptState {
-    name: string;
-    next?: string,
+export interface DraftScriptState<N extends string> {
+    name: N;
     onError?: string,
-    action: () => Promise<void>
+    action: () => Promise<string>
 }
 
 export interface ScriptState {
     name: string;
-    next?: () => (ScriptState | undefined),
-    onError?: () => (ScriptState | undefined)
+    action: () => Promise<ScriptState | undefined>,
+    onError?: () => ScriptState | undefined
 }
