@@ -4,6 +4,7 @@ import Tesseract from 'tesseract.js';
 import ISerialPort, {PortInfo} from 'serialport';
 import {ButtonEventData, Controller} from './controller/controller';
 import {Switch} from './Switch';
+import {initialStates, stateMachine} from './state-machine';
 
 
 async function findVideoSources(): Promise<Electron.DesktopCapturerSource[]> {
@@ -198,9 +199,9 @@ function App() {
                         window.controller.close()
                     }}>CLOSE
                     </button>
-                    <button>Play/Resume</button>
-                    <button>Pause</button>
-                    <button>Stop</button>
+                    <button onClick={() => stateMachine.start(initialStates[0])} >Play/Resume</button>
+                    <button onClick={() => stateMachine.pause()}>Pause</button>
+                    <button onClick={() => stateMachine.stop()}>Stop</button>
                 </div>
                 <img id='debug'/>
                 <Switch buttonEvents$={controller?.events$}>

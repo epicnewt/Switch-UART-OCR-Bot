@@ -1,6 +1,6 @@
 import {ScriptStateRegistry} from './script-state-registry';
 import {DraftScriptState, Falsey, ScriptState} from './script-state.model';
-import {Observable, Subject} from 'rxjs';
+import {Observable, pipe, Subject} from 'rxjs';
 import {Event} from './script-state-machine.model';
 import {bufferCount, filter, map} from 'rxjs/operators';
 
@@ -19,10 +19,11 @@ export class ScriptStateMachine<StateKey extends string> {
     private tape: Subject<Event<StateKey>> = new Subject<Event<StateKey>>();
 
     constructor(private stateRegistry: ScriptStateRegistry<StateKey>) {
-        this.machineState$().subscribe(this.onMachineState);
+        this.machineState$().subscribe(next => this.onMachineState(next));
     }
 
     private async onMachineState(next: MachineState<ScriptState<StateKey>>) {
+        console.log(next.status, (next.status === 'active' || next.status === 'paused') ? next.state.name : null, next);
         if (next.status === 'active') {
             const state = next.state;
             try {

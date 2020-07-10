@@ -5,9 +5,8 @@ import {ScriptStateMachine} from './script-state-machine';
 type StateNames = HostRaidStates
 
 const stateRegistry = new ScriptStateRegistry<StateNames>();
+hostRaidStates.forEach(state => stateRegistry.register(state));
 
 export const stateMachine = new ScriptStateMachine(stateRegistry);
-
-hostRaidStates.forEach(stateRegistry.register);
-
 export const initialStates = [hostRaidStates].map(arr => arr[0]);
+

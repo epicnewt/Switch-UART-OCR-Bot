@@ -25,7 +25,7 @@ export const hostRaidStates: DraftScriptState<HostRaidStates>[] = [{
 }, {
     name: 'connect-to-the-internet',
     action: async () => {
-        return 'connect-to-the-internet'
+        return 'exit'
     }
 }, {
     name: 'open-den',
