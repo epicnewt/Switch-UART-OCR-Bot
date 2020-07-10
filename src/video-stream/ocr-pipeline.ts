@@ -3,7 +3,9 @@ import Tesseract, {ImageLike, Page} from 'tesseract.js';
 
 const canvas = document.createElement('canvas');
 
-function getImage(rect: [number, number, number, number]): HTMLCanvasElement {
+export type ScreenRect = [number, number, number, number];
+
+function getImage(rect: ScreenRect): HTMLCanvasElement {
     const video: HTMLVideoElement | null = document.querySelector('video#video-stream');
 
     if (!video) {
@@ -28,7 +30,7 @@ function getImage(rect: [number, number, number, number]): HTMLCanvasElement {
     return canvas;
 }
 
-export function imageData(rect: [number, number, number, number] = [0, 0, 1, 1]): ImageData {
+export function imageData(rect: ScreenRect = [0, 0, 1, 1]): ImageData {
     const video: HTMLVideoElement | null = document.querySelector('video#video-stream');
 
     if (!video) {
@@ -49,7 +51,7 @@ export function imageData(rect: [number, number, number, number] = [0, 0, 1, 1])
     return context.getImageData(0, 0, canvas.width, canvas.height);
 }
 
-export function recognise(rect?: [number, number, number, number]): Promise<Page | null> {
+export function recognise(rect?: ScreenRect): Promise<Page | null> {
     return new Promise(resolve => {
         const image: ImageLike | null = rect ? getImage(rect) : document.querySelector('video#video-stream') as HTMLVideoElement;
         if (image)
@@ -61,6 +63,6 @@ export function recognise(rect?: [number, number, number, number]): Promise<Page
     })
 }
 
-export function recognise$(rect?: [number, number, number, number]): Observable<Page | null> {
+export function recognise$(rect?: ScreenRect): Observable<Page | null> {
     return defer(() => recognise(rect))
 }

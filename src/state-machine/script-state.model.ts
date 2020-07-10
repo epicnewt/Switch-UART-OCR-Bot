@@ -1,12 +1,14 @@
 
+export type Falsey = undefined | null | void | 0 | false
+
 export interface DraftScriptState<N extends string> {
     name: N;
-    onError?: string,
-    action: () => Promise<string>
+    action: () => Promise<N | Falsey>
+    onError?: (e: Error) => N,
 }
 
-export interface ScriptState {
-    name: string;
-    action: () => Promise<ScriptState | undefined>,
-    onError?: () => ScriptState | undefined
+export interface ScriptState<S extends string> {
+    name: S;
+    action: () => Promise<ScriptState<S> | Falsey>,
+    onError: (e: Error) => ScriptState<S> | Falsey
 }

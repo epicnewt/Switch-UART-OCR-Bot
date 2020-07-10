@@ -4,13 +4,12 @@ import Tesseract from 'tesseract.js';
 import ISerialPort from 'serialport';
 import {ButtonEventData, Controller} from './controller/controller';
 import {Switch} from './Switch';
-import {recognise} from './video-stream/ocr-pipeline';
+import * as Electron from 'electron'
 
-const {desktopCapturer} = Electron;
 
 async function findVideoSources(): Promise<Electron.DesktopCapturerSource[]> {
     return new Promise(resolve => {
-        desktopCapturer.getSources({
+        Electron.desktopCapturer.getSources({
             types: ['window', 'screen'],
             thumbnailSize: {width: 1000, height: 1000},
             fetchWindowIcons: true
@@ -170,12 +169,14 @@ function App() {
     return (
         <div className='App' style={{height: '100%'}}>
             <header className='App-header' style={{height: '100%'}}>
-                <button onClick={() => {
-                    // @ts-ignore
-                    window.controller.close()
-                }}>CLOSE
-                </button>
-                <button onClick={doOcrCheck}>Run OCR</button>
+                <div style={{display: 'inline-flex', flexDirection: 'row'}}>
+                    <button onClick={() => {
+                        // @ts-ignore
+                        window.controller.close()
+                    }}>CLOSE
+                    </button>
+                    <button>Start</button>
+                </div>
                 <img id='debug' />
                 <Switch buttonEvents$={controller?.events$}>
                     <video id='video-stream'
