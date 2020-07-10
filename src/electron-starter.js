@@ -2,6 +2,14 @@
 const {app, BrowserWindow} = require('electron');
 const path = require('path');
 
+global.portRef = {
+  current: null
+};
+
+global.streamRef = {
+  current: null
+};
+
 function createWindow () {
   // Create the browser window.
   const mainWindow = new BrowserWindow({

@@ -1,10 +1,9 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import './App.css';
 import Tesseract from 'tesseract.js';
-import ISerialPort from 'serialport';
+import ISerialPort, {PortInfo} from 'serialport';
 import {ButtonEventData, Controller} from './controller/controller';
 import {Switch} from './Switch';
-// import * as Electron from 'electron'
 
 
 async function findVideoSources(): Promise<Electron.DesktopCapturerSource[]> {
@@ -63,15 +62,36 @@ function App() {
     }, [controller]);
 
     useEffect(() => {
-        findVideoSources().then(setSources)
+        const streamName = Electron.remote.getGlobal('streamRef').current;
+
+        findVideoSources().then((availableSources: Electron.DesktopCapturerSource[]) => {
+            if (streamName) {
+                const match = availableSources.find(s => s.name === streamName);
+                if (match) {
+                    selectSource(match)
+                }
+            }
+            setSources(availableSources)
+        })
     }, []);
 
     useEffect(() => {
         const SerialPort = Electron.remote.require('serialport');
 
-        setIntervalID(setInterval(() => {
-            SerialPort.list().then(setPorts)
-        }, 500));
+        const port = Electron.remote.getGlobal('portRef').current;
+        if (port?.isOpen) {
+            SerialPort.list().then((availablePorts: PortInfo[]) => {
+                const connectedPort = availablePorts.filter(p => p.path === port.path).find(() => true);
+                if (connectedPort) {
+                    selectPort(connectedPort)
+                }
+            })
+        } else {
+            setIntervalID(setInterval(() => {
+                SerialPort.list().then(setPorts)
+            }, 500));
+        }
+
     }, []);
 
     useEffect(() => {
@@ -149,7 +169,10 @@ function App() {
                         {
                             sources.filter(s => !!s.appIcon).map(source => (
                                 <img key={source.id} style={{width: 64, height: 'auto', marginRight: '5px'}}
-                                     src={source.appIcon.toDataURL()} onClick={() => selectSource(source)}/>
+                                     src={source.appIcon.toDataURL()} onClick={() => {
+                                    Electron.remote.getGlobal('streamRef').current = source.name;
+                                    selectSource(source)
+                                }}/>
                             ))
                         }
                         <video id='video-stream'
@@ -175,9 +198,11 @@ function App() {
                         window.controller.close()
                     }}>CLOSE
                     </button>
-                    <button>Start</button>
+                    <button>Play/Resume</button>
+                    <button>Pause</button>
+                    <button>Stop</button>
                 </div>
-                <img id='debug' />
+                <img id='debug'/>
                 <Switch buttonEvents$={controller?.events$}>
                     <video id='video-stream'
                            style={{

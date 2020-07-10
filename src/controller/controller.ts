@@ -6,7 +6,8 @@ import {map, share} from 'rxjs/operators';
 
 
 // @ts-ignore
-const SerialPort = Electron.remote.require('serialport');
+const remote = Electron.remote;
+const SerialPort = remote.require('serialport');
 
 async function asyncSleep(milliseconds: number) {
     const end = performance.now() + milliseconds;
@@ -52,7 +53,19 @@ export class Controller {
     private eventEmitter: Subject<Payload>;
 
     constructor(private portPath: string) {
-        this.port = new SerialPort(portPath, {baudRate: 9600, autoOpen: true});
+        const controllerRef = remote.getGlobal('portRef');
+        if (controllerRef.current) {
+            if (controllerRef.current.path === portPath) {
+                this.port = controllerRef.current;
+            } else {
+                controllerRef.current.close();
+                this.port = new SerialPort(portPath, {baudRate: 9600, autoOpen: true});
+            }
+        } else {
+            this.port = new SerialPort(portPath, {baudRate: 9600, autoOpen: true});
+            controllerRef.current = this.port
+        }
+
         this.eventEmitter = new Subject();
         this.events$ = this.eventEmitter.asObservable().pipe(
             map(data => ({
@@ -82,6 +95,7 @@ export class Controller {
             share()
         )
     }
+
     reset() {
         this.payload.reset();
         this.sendPayload();
