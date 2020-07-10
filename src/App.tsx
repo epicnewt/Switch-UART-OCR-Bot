@@ -4,7 +4,7 @@ import Tesseract from 'tesseract.js';
 import ISerialPort from 'serialport';
 import {ButtonEventData, Controller} from './controller/controller';
 import {Switch} from './Switch';
-import * as Electron from 'electron'
+// import * as Electron from 'electron'
 
 
 async function findVideoSources(): Promise<Electron.DesktopCapturerSource[]> {
