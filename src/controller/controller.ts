@@ -46,119 +46,115 @@ export interface ButtonEventData {
 
 
 export class Controller {
-    public events$: Observable<ButtonEventData>;
+    private static eventEmitter: Subject<Payload> = new Subject();
+    public static events$: Observable<ButtonEventData> = Controller.eventEmitter.asObservable().pipe(
+        map(data => ({
+            leftStick: data.leftStick,
+            rightStick: data.rightStick,
+            dpad: {
+                up: [HAT.TOP, HAT.TOP_LEFT, HAT.TOP_RIGHT].includes(data.hat),
+                left: [HAT.LEFT, HAT.TOP_LEFT, HAT.BOTTOM_LEFT].includes(data.hat),
+                right: [HAT.RIGHT, HAT.TOP_RIGHT, HAT.BOTTOM_RIGHT].includes(data.hat),
+                down: [HAT.BOTTOM, HAT.BOTTOM_RIGHT, HAT.BOTTOM_LEFT].includes(data.hat)
+            },
+            a: !!(data.buttons & Buttons.A),
+            b: !!(data.buttons & Buttons.B),
+            x: !!(data.buttons & Buttons.X),
+            y: !!(data.buttons & Buttons.Y),
+            plus: !!(data.buttons & Buttons.PLUS),
+            minus: !!(data.buttons & Buttons.MINUS),
+            r: !!(data.buttons & Buttons.R),
+            zr: !!(data.buttons & Buttons.ZR),
+            l: !!(data.buttons & Buttons.L),
+            zl: !!(data.buttons & Buttons.ZL),
+            lClick: !!(data.buttons & Buttons.LCLICK),
+            rClick: !!(data.buttons & Buttons.RCLICK),
+            home: !!(data.buttons & Buttons.HOME),
+            capture: !!(data.buttons & Buttons.CAPTURE),
+        })),
+        share()
+    );
+    private static payload: Payload = new Payload();
+    private static port: ISerialPort;
 
-    private payload: Payload = new Payload();
-    private port: ISerialPort;
-    private eventEmitter: Subject<Payload>;
-
-    constructor(private portPath: string) {
+    static connect(portPath: string) {
         const controllerRef = remote.getGlobal('portRef');
         if (controllerRef.current) {
             if (controllerRef.current.path === portPath) {
-                this.port = controllerRef.current;
+                Controller.port = controllerRef.current;
             } else {
                 controllerRef.current.close();
-                this.port = new SerialPort(portPath, {baudRate: 9600, autoOpen: true});
+                Controller.port = new SerialPort(portPath, {baudRate: 9600, autoOpen: true});
             }
         } else {
-            this.port = new SerialPort(portPath, {baudRate: 9600, autoOpen: true});
-            controllerRef.current = this.port
+            Controller.port = new SerialPort(portPath, {baudRate: 9600, autoOpen: true});
+            controllerRef.current = Controller.port
         }
-
-        this.eventEmitter = new Subject();
-        this.events$ = this.eventEmitter.asObservable().pipe(
-            map(data => ({
-                leftStick: data.leftStick,
-                rightStick: data.rightStick,
-                dpad: {
-                    up: [HAT.TOP, HAT.TOP_LEFT, HAT.TOP_RIGHT].includes(data.hat),
-                    left: [HAT.LEFT, HAT.TOP_LEFT, HAT.BOTTOM_LEFT].includes(data.hat),
-                    right: [HAT.RIGHT, HAT.TOP_RIGHT, HAT.BOTTOM_RIGHT].includes(data.hat),
-                    down: [HAT.BOTTOM, HAT.BOTTOM_RIGHT, HAT.BOTTOM_LEFT].includes(data.hat)
-                },
-                a: !!(data.buttons & Buttons.A),
-                b: !!(data.buttons & Buttons.B),
-                x: !!(data.buttons & Buttons.X),
-                y: !!(data.buttons & Buttons.Y),
-                plus: !!(data.buttons & Buttons.PLUS),
-                minus: !!(data.buttons & Buttons.MINUS),
-                r: !!(data.buttons & Buttons.R),
-                zr: !!(data.buttons & Buttons.ZR),
-                l: !!(data.buttons & Buttons.L),
-                zl: !!(data.buttons & Buttons.ZL),
-                lClick: !!(data.buttons & Buttons.LCLICK),
-                rClick: !!(data.buttons & Buttons.RCLICK),
-                home: !!(data.buttons & Buttons.HOME),
-                capture: !!(data.buttons & Buttons.CAPTURE),
-            })),
-            share()
-        )
     }
 
-    reset() {
-        this.payload.reset();
-        this.sendPayload();
+    static reset() {
+        Controller.payload.reset();
+        Controller.sendPayload();
     };
 
-    private async sendPayloadAndReset(timeout = 250) {
-        this.sendPayload();
+    private static async sendPayloadAndReset(timeout = 230) {
+        Controller.sendPayload();
         await asyncSleep(timeout);
-        this.reset();
+        Controller.reset();
     }
 
-    private sendPayload() {
-        this.eventEmitter.next(this.payload);
-        this.port.write(this.payload.asBytes());
-        this.port.flush();
-        this.port.read();
+    private static sendPayload() {
+        Controller.eventEmitter.next(Controller.payload);
+        Controller.port.write(Controller.payload.asBytes());
+        Controller.port.flush();
+        Controller.port.read();
     }
 
-    close() {
-        this.port.close((err) => {
+    static close() {
+        Controller.port.close((err) => {
             console.log('close err:', err)
         });
     }
 
-    home = Controller.repeatable((() => this.pressButton(Buttons.HOME)));
-    capture = Controller.repeatable((() => this.pressButton(Buttons.CAPTURE)));
-    a = Controller.repeatable((() => this.pressButton(Buttons.A)));
-    b = Controller.repeatable((() => this.pressButton(Buttons.B)));
-    x = Controller.repeatable((() => this.pressButton(Buttons.X)));
-    y = Controller.repeatable((() => this.pressButton(Buttons.Y)));
-    plus = Controller.repeatable((() => this.pressButton(Buttons.PLUS)));
-    minus = Controller.repeatable((() => this.pressButton(Buttons.MINUS)));
-    rClick = Controller.repeatable((() => this.pressButton(Buttons.RCLICK)));
-    r = Controller.repeatable((() => this.pressButton(Buttons.R)));
-    zr = Controller.repeatable((() => this.pressButton(Buttons.ZR)));
-    lClick = Controller.repeatable((() => this.pressButton(Buttons.LCLICK)));
-    l = Controller.repeatable((() => this.pressButton(Buttons.L)));
-    zl = Controller.repeatable((() => this.pressButton(Buttons.ZL)));
-    top = Controller.repeatable((() => this.applyDPad(HAT.TOP)));
-    topRight = Controller.repeatable((() => this.applyDPad(HAT.TOP_RIGHT)));
-    right = Controller.repeatable((() => this.applyDPad(HAT.RIGHT)));
-    bottomRight = Controller.repeatable((() => this.applyDPad(HAT.BOTTOM_RIGHT)));
-    bottom = Controller.repeatable((() => this.applyDPad(HAT.BOTTOM)));
-    bottomLeft = Controller.repeatable((() => this.applyDPad(HAT.BOTTOM_LEFT)));
-    left = Controller.repeatable((() => this.applyDPad(HAT.LEFT)));
-    topLeft = Controller.repeatable((() => this.applyDPad(HAT.TOP_LEFT)));
-    center = Controller.repeatable((() => this.applyDPad(HAT.CENTER)));
+    static home = Controller.repeatable((() => Controller.pressButton(Buttons.HOME)));
+    static capture = Controller.repeatable((() => Controller.pressButton(Buttons.CAPTURE)));
+    static a = Controller.repeatable((() => Controller.pressButton(Buttons.A)));
+    static b = Controller.repeatable((() => Controller.pressButton(Buttons.B)));
+    static x = Controller.repeatable((() => Controller.pressButton(Buttons.X)));
+    static y = Controller.repeatable((() => Controller.pressButton(Buttons.Y)));
+    static plus = Controller.repeatable((() => Controller.pressButton(Buttons.PLUS)));
+    static minus = Controller.repeatable((() => Controller.pressButton(Buttons.MINUS)));
+    static rClick = Controller.repeatable((() => Controller.pressButton(Buttons.RCLICK)));
+    static r = Controller.repeatable((() => Controller.pressButton(Buttons.R)));
+    static zr = Controller.repeatable((() => Controller.pressButton(Buttons.ZR)));
+    static lClick = Controller.repeatable((() => Controller.pressButton(Buttons.LCLICK)));
+    static l = Controller.repeatable((() => Controller.pressButton(Buttons.L)));
+    static zl = Controller.repeatable((() => Controller.pressButton(Buttons.ZL)));
+    static up = Controller.repeatable((() => Controller.applyDPad(HAT.TOP)));
+    static upRight = Controller.repeatable((() => Controller.applyDPad(HAT.TOP_RIGHT)));
+    static right = Controller.repeatable((() => Controller.applyDPad(HAT.RIGHT)));
+    static downRight = Controller.repeatable((() => Controller.applyDPad(HAT.BOTTOM_RIGHT)));
+    static down = Controller.repeatable((() => Controller.applyDPad(HAT.BOTTOM)));
+    static downLeft = Controller.repeatable((() => Controller.applyDPad(HAT.BOTTOM_LEFT)));
+    static left = Controller.repeatable((() => Controller.applyDPad(HAT.LEFT)));
+    static upLeft = Controller.repeatable((() => Controller.applyDPad(HAT.TOP_LEFT)));
+    static center = Controller.repeatable((() => Controller.applyDPad(HAT.CENTER)));
 
-    async leftStick(x: number, y: number) {
-        this.payload.leftStick[0] = x;
-        this.payload.leftStick[1] = y;
-        await this.sendPayload();
+    static async leftStick(x: number, y: number) {
+        Controller.payload.leftStick[0] = x;
+        Controller.payload.leftStick[1] = y;
+        await Controller.sendPayload();
     }
 
-    async rightStick(x: number, y: number) {
-        this.payload.rightStick[0] = x;
-        this.payload.rightStick[1] = y;
-        await this.sendPayload();
+    static async rightStick(x: number, y: number) {
+        Controller.payload.rightStick[0] = x;
+        Controller.payload.rightStick[1] = y;
+        await Controller.sendPayload();
     }
 
-    private async applyDPad(button: HAT) {
-        this.payload.hat = button;
-        await this.sendPayloadAndReset()
+    private static async applyDPad(button: HAT) {
+        Controller.payload.hat = button;
+        await Controller.sendPayloadAndReset()
     }
 
     private static repeatable(action: () => Promise<any>): (times?: number) => Promise<any> {
@@ -171,19 +167,19 @@ export class Controller {
         };
     }
 
-    async pressButton(...buttons: Buttons[]) {
+    static async pressButton(...buttons: Buttons[]) {
         for (const button of buttons) {
-            this.payload.applyButton(button)
+            Controller.payload.applyButton(button)
         }
-        await this.sendPayloadAndReset();
+        await Controller.sendPayloadAndReset();
     }
 
-    transaction(fn: (c: Controller) => (Promise<void> | void)) {
+    static transaction(fn: (c: Controller) => (Promise<void> | void)) {
         fn(this)
     }
 
-    asBytes(): Buffer {
-        return this.payload.asBytes();
+    static asBytes(): Buffer {
+        return Controller.payload.asBytes();
     }
 }
 

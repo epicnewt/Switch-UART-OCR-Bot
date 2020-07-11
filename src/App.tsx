@@ -14,7 +14,6 @@ async function findVideoSources(): Promise<Electron.DesktopCapturerSource[]> {
             thumbnailSize: {width: 1000, height: 1000},
             fetchWindowIcons: true
         }).then(async (sources: Electron.DesktopCapturerSource[]) => {
-            console.log(sources);
             resolve(sources);
         });
     })
@@ -30,7 +29,6 @@ function App() {
 
     const [ports, setPorts] = useState<ISerialPort.PortInfo[]>([]);
     const [sources, setSources] = useState<Electron.DesktopCapturerSource[]>([]);
-    const [controller, setController] = useState<Controller>();
     const [buttonData, setButtonData] = useState<ButtonEventData>();
     const [compState, setCompState] = useState(0);
     const [intervalID, setIntervalID] = useState<NodeJS.Timeout>();
@@ -43,34 +41,16 @@ function App() {
         }
     }, []);
 
-    async function doOcrCheck() {
-        console.log('doOcrCheck():', videoEl);
-
-        if (!videoEl)
-            return;
-
-        Tesseract.recognize(videoEl, {
-            langs: 'eng'
-        })
-            .catch((err: any) => console.error('Tesseract.recognize(videoEl.current)', err))
-            .then((result) => console.log('Tesseract.recognize(videoEl.current)', result));
-    }
+    useEffect(() => {
+        Controller.events$.subscribe(setButtonData)
+    }, []);
 
     useEffect(() => {
-        if (controller) {
-            controller.events$.subscribe(setButtonData)
-        }
-    }, [controller]);
-
-    useEffect(() => {
-        const streamName = Electron.remote.getGlobal('streamRef').current;
+        const streamId = Electron.remote.getGlobal('streamRef').current;
 
         findVideoSources().then((availableSources: Electron.DesktopCapturerSource[]) => {
-            if (streamName) {
-                const match = availableSources.find(s => s.name === streamName);
-                if (match) {
-                    selectSource(match)
-                }
+            if (streamId) {
+                selectSource({id: streamId} as Electron.DesktopCapturerSource)
             }
             setSources(availableSources)
         })
@@ -102,6 +82,8 @@ function App() {
                     videoEl.play()
                 };
 
+                Electron.remote.getGlobal('streamRef').current = selectedSource.id;
+
                 videoEl.srcObject = await navigator.mediaDevices.getUserMedia({
                     audio: false,
                     video: {
@@ -115,8 +97,6 @@ function App() {
                         }
                     } as MediaTrackConstraints
                 })
-            } else {
-                console.error('Failed to start video')
             }
         }
 
@@ -126,12 +106,10 @@ function App() {
     }, [selectedSource, videoEl]);
 
     useEffect(() => {
-        console.log('selectedPort:', selectedPort);
         if (selectedPort) {
-            const c = new Controller(selectedPort.path);
-            setController(c);
+            Controller.connect(selectedPort.path);
             // @ts-ignore
-            window.controller = c;
+            window.controller = Controller;
             if (intervalID) {
                 clearInterval(intervalID)
             }
@@ -170,10 +148,7 @@ function App() {
                         {
                             sources.filter(s => !!s.appIcon).map(source => (
                                 <img key={source.id} style={{width: 64, height: 'auto', marginRight: '5px'}}
-                                     src={source.appIcon.toDataURL()} onClick={() => {
-                                    Electron.remote.getGlobal('streamRef').current = source.name;
-                                    selectSource(source)
-                                }}/>
+                                     src={source.appIcon.toDataURL()} onClick={() => selectSource(source)}/>
                             ))
                         }
                         <video id='video-stream'
@@ -199,12 +174,12 @@ function App() {
                         window.controller.close()
                     }}>CLOSE
                     </button>
-                    <button onClick={() => stateMachine.start(initialStates[0])} >Play/Resume</button>
+                    <button onClick={() => stateMachine.start(initialStates[0])}>Play/Resume</button>
                     <button onClick={() => stateMachine.pause()}>Pause</button>
                     <button onClick={() => stateMachine.stop()}>Stop</button>
                 </div>
                 <img id='debug'/>
-                <Switch buttonEvents$={controller?.events$}>
+                <Switch buttonEvents$={Controller.events$}>
                     <video id='video-stream'
                            style={{
                                width: '100%',

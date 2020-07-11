@@ -5,7 +5,7 @@ const canvas = document.createElement('canvas');
 
 export type ScreenRect = [number, number, number, number];
 
-function getImage(rect: ScreenRect): HTMLCanvasElement {
+function getImage(rect: ScreenRect, preview: boolean): HTMLCanvasElement {
     const video: HTMLVideoElement | null = document.querySelector('video#video-stream');
 
     if (!video) {
@@ -23,9 +23,11 @@ function getImage(rect: ScreenRect): HTMLCanvasElement {
     const context = canvas.getContext('2d') as CanvasRenderingContext2D;
     context.drawImage(video, -video.videoWidth * left, -videoHeight * top - topOffset, video.videoWidth, video.videoHeight);
 
-    const imageTag = document.querySelector('img#debug') as HTMLImageElement;
-    (imageTag).src = canvas.toDataURL();
-    setTimeout(() => imageTag.src = '', 1500);
+    if (preview) {
+        const imageTag = document.querySelector('img#debug') as HTMLImageElement;
+        (imageTag).src = canvas.toDataURL();
+        setTimeout(() => imageTag.src = '', 1500);
+    }
 
     return canvas;
 }
@@ -42,7 +44,7 @@ export function imageData(rect: ScreenRect = [0, 0, 1, 1]): ImageData {
     const videoHeight = video.videoWidth * 9 / 16;
     const topOffset = (video.videoHeight - videoHeight) / 2;
 
-    canvas.width = (width >= 1) ? width :  video.videoWidth * width;
+    canvas.width = (width >= 1) ? width : video.videoWidth * width;
     canvas.height = (height >= 1) ? height : videoHeight * height;
 
     const context = canvas.getContext('2d') as CanvasRenderingContext2D;
@@ -51,18 +53,20 @@ export function imageData(rect: ScreenRect = [0, 0, 1, 1]): ImageData {
     return context.getImageData(0, 0, canvas.width, canvas.height);
 }
 
-export function recognise(rect?: ScreenRect): Promise<Page | null> {
+export function recogniseText(rect?: ScreenRect, preview = false): Promise<Page> {
     return new Promise(resolve => {
-        const image: ImageLike | null = rect ? getImage(rect) : document.querySelector('video#video-stream') as HTMLVideoElement;
-        if (image)
-            return Tesseract.recognize(image).then((result) => {
-                resolve(result)
-            });
-        else
-            resolve(null)
+        const image: ImageLike = rect ? getImage(rect, preview) : document.querySelector('video#video-stream') as HTMLVideoElement;
+        return Tesseract.recognize(image).then((result) => {
+            resolve(result)
+        });
     })
 }
 
 export function recognise$(rect?: ScreenRect): Observable<Page | null> {
-    return defer(() => recognise(rect))
+    return defer(() => recogniseText(rect))
 }
+
+// @ts-ignore
+window.recogniseText = recogniseText;
+// @ts-ignore
+window.ocr = recogniseText;

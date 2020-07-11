@@ -1,11 +1,11 @@
 import React, {MutableRefObject, useEffect, useRef, useState} from 'react';
 import {Observable, Subscription} from 'rxjs';
-import {ButtonEventData} from './controller/controller';
+import {ButtonEventData, Controller} from './controller/controller';
 import {tap} from 'rxjs/operators';
 import {isEqual} from 'lodash-es';
 import {Stick} from './controller/buttons.model';
-import {imageData, recognise} from './video-stream/ocr-pipeline';
-import {ColourMatcher} from './video-stream/ColourMatcher';
+import {imageData, recogniseText} from './video-stream/ocr-pipeline';
+import {ColourMatcher} from './video-stream/colour-matcher';
 
 interface SwitchProps {
     children?: React.ReactChild;
@@ -92,13 +92,10 @@ export function Switch({children, buttonEvents$}: SwitchProps = {}) {
     }, []);
     useEffect(() => {
             if (subscription) {
-                console.log('unsubscribing from the old controller event data');
                 subscription.unsubscribe();
             }
             if (buttonEvents$) {
-                console.log('Subscribing to controller event data');
-                console.log('ref null:', !dpadLeft);
-                const newSubscription = buttonEvents$.pipe(tap(console.log)).subscribe((next) => {
+                const newSubscription = buttonEvents$.subscribe((next) => {
                     buttonState.current = next;
                 });
                 setter(newSubscription)
@@ -130,6 +127,7 @@ export function Switch({children, buttonEvents$}: SwitchProps = {}) {
                             strokeLinecap='round'
                             strokeLinejoin='round'
                             ref={dpadUp}
+                            onClick={() => Controller.up()}
                             stroke={buttonState.current?.dpad?.up ? green : black}
                             strokeWidth='1'
                             d='M87.355 200.042c0 8.367-6.783 15.15-15.15 15.15-8.368 0-15.15-6.783-15.15-15.15 0-8.368 6.782-15.15 15.15-15.15 8.367 0 15.15 6.782 15.15 15.15h0z'
@@ -139,6 +137,7 @@ export function Switch({children, buttonEvents$}: SwitchProps = {}) {
                             strokeLinecap='round'
                             strokeLinejoin='round'
                             ref={dpadDown}
+                            onClick={() => Controller.down()}
                             stroke={buttonState.current?.dpad?.down ? green : black}
                             strokeWidth='1'
                             d='M87.355 262.671c0 8.367-6.783 15.15-15.15 15.15-8.368 0-15.15-6.783-15.15-15.15s6.782-15.15 15.15-15.15c8.367 0 15.15 6.783 15.15 15.15h0z'
@@ -148,6 +147,7 @@ export function Switch({children, buttonEvents$}: SwitchProps = {}) {
                             strokeLinecap='round'
                             strokeLinejoin='round'
                             ref={dpadLeft}
+                            onClick={() => Controller.left()}
                             stroke={buttonState.current?.dpad?.left ? green : black}
                             strokeWidth='1'
                             d='M40.89 246.507c-8.367 0-15.15-6.783-15.15-15.15 0-8.368 6.783-15.151 15.15-15.151s15.15 6.783 15.15 15.15c0 8.368-6.783 15.15-15.15 15.15h0z'
@@ -157,6 +157,7 @@ export function Switch({children, buttonEvents$}: SwitchProps = {}) {
                             strokeLinecap='round'
                             strokeLinejoin='round'
                             ref={dpadRight}
+                            onClick={() => Controller.right()}
                             stroke={buttonState.current?.dpad?.right ? green : black}
                             strokeWidth='1'
                             d='M103.52 246.507c-8.368 0-15.151-6.783-15.151-15.15 0-8.368 6.783-15.151 15.15-15.151 8.368 0 15.15 6.783 15.15 15.15 0 8.368-6.782 15.15-15.15 15.15h0z'
@@ -164,6 +165,7 @@ export function Switch({children, buttonEvents$}: SwitchProps = {}) {
                         <path
                             fill='#44484C'
                             ref={minusButton}
+                            onClick={() => Controller.minus()}
                             stroke={buttonState.current?.minus ? green : black}
                             strokeLinecap='round'
                             strokeLinejoin='round'
@@ -275,6 +277,7 @@ export function Switch({children, buttonEvents$}: SwitchProps = {}) {
                         <path
                             fill='#44484C'
                             ref={plusButton}
+                            onClick={() => Controller.plus()}
                             stroke={buttonState.current?.plus ? green : black}
                             strokeLinecap='round'
                             strokeLinejoin='round'
@@ -284,6 +287,7 @@ export function Switch({children, buttonEvents$}: SwitchProps = {}) {
                         <path
                             fill='#44484C'
                             ref={xButton}
+                            onClick={() => Controller.x()}
                             stroke={buttonState.current?.x ? green : black}
                             strokeLinecap='round'
                             strokeLinejoin='round'
@@ -294,6 +298,7 @@ export function Switch({children, buttonEvents$}: SwitchProps = {}) {
                         <path
                             fill='#44484C'
                             ref={bButton}
+                            onClick={() => Controller.b()}
                             stroke={buttonState.current?.b ? green : black}
                             strokeLinecap='round'
                             strokeLinejoin='round'
@@ -304,6 +309,7 @@ export function Switch({children, buttonEvents$}: SwitchProps = {}) {
                         <path
                             fill='#44484C'
                             ref={yButton}
+                            onClick={() => Controller.y()}
                             stroke={buttonState.current?.y ? green : black}
                             strokeLinecap='round'
                             strokeLinejoin='round'
@@ -314,6 +320,7 @@ export function Switch({children, buttonEvents$}: SwitchProps = {}) {
                         <path
                             fill='#44484C'
                             ref={aButton}
+                            onClick={() => Controller.a()}
                             stroke={buttonState.current?.a ? green : black}
                             strokeLinecap='round'
                             strokeLinejoin='round'
@@ -324,6 +331,7 @@ export function Switch({children, buttonEvents$}: SwitchProps = {}) {
                         <path
                             fill='#999595'
                             ref={homeButton}
+                            onClick={() => Controller.home()}
                             stroke={buttonState.current?.home ? green : black}
                             strokeLinecap='round'
                             strokeLinejoin='round'
@@ -453,7 +461,7 @@ export function Switch({children, buttonEvents$}: SwitchProps = {}) {
                                                         ];
                                                         console.log(`[${left}/${width}, ${top}/${height}, ${right - left}/${width}, ${bottom - top}/${height}]`, rectangle);
                                                         if (rectangle[2] && rectangle[3])
-                                                            recognise(rectangle).then(d => console.log(d, ColourMatcher.closestMatch(imageData([left / width, top / height, 1, 1])?.data.slice(0, 3))))
+                                                            recogniseText(rectangle).then(d => console.log(d, ColourMatcher.closestMatch(imageData([left / width, top / height, 1, 1])?.data.slice(0, 3))))
                                                         vidCoord.current = null
                                                     }
 
