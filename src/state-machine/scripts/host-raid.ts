@@ -3,7 +3,7 @@ import {imageData, recogniseText, ScreenRect} from '../../video-stream/ocr-pipel
 import {ColourMatcher, ColourName} from '../../video-stream/colour-matcher';
 import {Controller} from '../../controller/controller';
 import {messagePublisher} from '../../messages/message-publisher';
-import {uniq} from 'lodash-es';
+import {last, uniq} from 'lodash-es';
 
 const wildArea = {
     connectionIndicator: [5 / 1012, 556 / 570, 1, 1] as ScreenRect
@@ -18,7 +18,8 @@ const raidDen = {
     inviteOthers: [692 / 1067, 365 / 601, 306 / 1067, 33 / 601] as ScreenRect,
     readyToEnterCode: [95 / 1067, 34 / 601, 432 / 1067, 45 / 601] as ScreenRect,
     prompt: [251 / 979, 445 / 551, 478 / 979, 69 / 551] as ScreenRect,
-    finalParticipant: [649 / 979, 322 / 551, 135 / 979, 18 / 551] as ScreenRect,
+    participants: range(3).map(i =>  [648/979, (234 + 43 * i)/551, 143/979, 23/551] as ScreenRect),
+
     readyToBattle: [634 / 979, 379 / 551, 285 / 979, 31 / 551] as ScreenRect,
     startMenu: [640 / 979, 393 / 551, 0 / 979, 0 / 551] as ScreenRect,
 };
@@ -115,8 +116,8 @@ export type HostRaidStates =
     | 'enter-code::start'
     | 'enter-code::code'
     | 'enter-code::confirm'
-    | 'wait-for-participants-1'
-    | 'wait-for-participants-2'
+    | 'wait-for-priority-participants'
+    | 'wait-for-non-priority-participants'
     | 'wait-for-participants-to-be-ready'
     | 'get-ready-for-raid'
     | 'wait-for-battle-to-start'
@@ -246,29 +247,35 @@ export const hostRaidStates: DraftScriptState<HostRaidStates>[] = [{
     action: async (): Promise<HostRaidStates> => {
         await Controller.a();
         await matchText(raidDen.readyToBattle, /ready to battle/i, 10);
-        return 'wait-for-participants-1'
+        return 'wait-for-priority-participants'
     },
     onError: () => 'invite-others'
 }, {
-    name: 'wait-for-participants-1',
+    name: 'wait-for-priority-participants',
     action: async (): Promise<HostRaidStates> => {
         // const participants = async () => await Promise.all(Array.from(Array(3).keys()).map((async (i) => {
         //     return (await recogniseText([651/979, (238 + i * 44)/551, 134/979, 17/551])).text
         // })));
         state.start = Date.now();
         setTimeout(() => messagePublisher.publishPrivately(state.code));
-        await matchText(raidDen.finalParticipant, /^\s+(?!\s*searching\s*)/i, 30);
+        // await matchText(last(raidDen.participants) as ScreenRect, /^\s+(?!\s*searching\s*)/i, 30);
+        await matchText(last(raidDen.participants) as ScreenRect, /^\s+(?!\s*searching\s*)/i, 10);
         return 'wait-for-participants-to-be-ready'
     },
     onError: () => {
         setTimeout(() => messagePublisher.publishPublicly(state.code));
-        return 'wait-for-participants-2'
+        return 'wait-for-non-priority-participants'
     }
 }, {
-    name: 'wait-for-participants-2',
+    name: 'wait-for-non-priority-participants',
     action: async (): Promise<HostRaidStates> => {
-        state.start = Date.now();
-        await matchText(raidDen.finalParticipant, /^\s+(?!\s*searching\s*)/i, 10);
+        const timeElapsed = (Date.now() - state.start) / 1000;
+        // const waitTime = 2.5 * 60;
+        const waitTime = 30;
+        await matchText(raidDen.participants[0] as ScreenRect, /^(?!\s*searching\s*)/i, waitTime - timeElapsed);
+        await matchText(last(raidDen.participants) as ScreenRect, /^(?!\s*searching\s*)/i, waitTime - timeElapsed).catch(() => {
+            console.log('The raid is not full')
+        });
         return 'get-ready-for-raid'
     },
     onError: () => 'close-game'
