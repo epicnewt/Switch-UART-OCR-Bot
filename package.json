@@ -50,7 +50,7 @@
     ]
   },
   "devDependencies": {
-    "electron": "^9.0.5",
+    "electron": "^18.3.7",
     "tslint": "^6.1.2",
     "tslint-react": "^5.0.0"
   }
