@@ -22,7 +22,7 @@
     "redux": "^4.0.5",
     "rxjs": "^6.5.5",
     "serialport": "^9.0.0",
-    "tesseract.js": "^1.0.19",
+    "tesseract.js": "^4.1.1",
     "typescript": "^3.7.5"
   },
   "main": "src/electron-starter.js",
